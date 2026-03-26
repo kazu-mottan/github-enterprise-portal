@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub Copilot — GitHub Enterprise ポータル</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      padding: 60px 24px 80px;
+      text-align: center;
+    }
+    .page-hero .breadcrumb { font-size: 0.85rem; opacity: 0.6; margin-bottom: 16px; }
+    .page-hero .breadcrumb a { color: white; }
+    .page-hero h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 12px; }
+    .page-hero p { opacity: 0.8; max-width: 600px; margin: 0 auto 28px; font-size: 1.05rem; }
+    .page-hero .hero-badge {
+      display: inline-block;
+      background: rgba(99,102,241,0.3);
+      border: 1px solid rgba(99,102,241,0.6);
+      color: #a5b4fc;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Copilot アイコン（グラデーション） */
+    .copilot-icon-hero {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 24px;
+      box-shadow: 0 8px 32px rgba(99,102,241,0.4);
+    }
+
+    .stat-bar {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+      margin-top: 36px;
+      padding-top: 36px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .stat-item { text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 700; color: #a5b4fc; }
+    .stat-label { font-size: 0.8rem; opacity: 0.6; margin-top: 4px; }
+
+    /* 機能カード */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: white;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      padding: 24px;
+    }
+    .feature-card .fc-icon { font-size: 1.8rem; margin-bottom: 12px; }
+    .feature-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; }
+    .feature-card p { font-size: 0.88rem; color: #57606a; line-height: 1.6; }
+
+    /* Before/After デモ */
+    .demo-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .demo-box {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #d0d7de;
+    }
+    .demo-box-header {
+      padding: 10px 16px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .demo-box-header.before { background: #f6f8fa; color: #57606a; }
+    .demo-box-header.after  { background: #dafbe1; color: #116329; }
+    .demo-box pre {
+      margin: 0;
+      padding: 16px;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      background: #0d1117;
+      color: #e6edf3;
+      overflow-x: auto;
+    }
+    .demo-box pre .copilot-suggest { color: #79c0ff; }
+    .demo-box pre .comment { color: #8b949e; }
+    .demo-box pre .keyword { color: #ff7b72; }
+    .demo-box pre .string { color: #a5d6ff; }
+    .demo-box pre .fn { color: #d2a8ff; }
+
+    /* セットアップステップ */
+    .setup-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+    .setup-steps::before {
+      content: '';
+      position: absolute;
+      left: 23px;
+      top: 24px;
+      bottom: 24px;
+      width: 2px;
+      background: #d0d7de;
+    }
+    .setup-step {
+      display: flex;
+      gap: 20px;
+      padding-bottom: 32px;
+      position: relative;
+    }
+    .setup-step:last-child { padding-bottom: 0; }
+    .setup-step-num {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .setup-step-body h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; margin-top: 12px; }
+    .setup-step-body p { font-size: 0.9rem; color: #57606a; }
+    .setup-step-body code {
+      background: #f6f8fa;
+      border: 1px solid #d0d7de;
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-size: 0.85rem;
+      font-family: monospace;
+    }
+
+    /* ポリシーテーブル */
+    .policy-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .policy-table th, .policy-table td {
+      text-align: left;
+      padding: 10px 14px;
+      border: 1px solid #d0d7de;
+      vertical-align: top;
+    }
+    .policy-table th { background: #f6f8fa; font-weight: 600; }
+    .policy-table tr:nth-child(even) td { background: #fafafa; }
+
+    .badge-ok  { display:inline-block; background:#dafbe1; color:#116329; padding:2px 8px; border-radius:12px; font-size:0.75rem; font-weight:600; }
+    .badge-ng  { display:inline-block; background:#ffebe9; color:#cf222e; padding:2px 8px; border-radius:12px; font-size:0.75rem; font-weight:600; }
+    .badge-caution { display:inline-block; background:#fff8c5; color:#9a6700; padding:2px 8px; border-radius:12px; font-size:0.75rem; font-weight:600; }
+
+    .info-box {
+      background: #ddf4ff;
+      border: 1px solid #54aeff;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 0.9rem;
+      color: #0550ae;
+      margin-top: 24px;
+    }
+    .info-box strong { display: block; margin-bottom: 4px; }
+
+    .warn-box {
+      background: #fff8c5;
+      border: 1px solid #d4a72c;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 0.9rem;
+      color: #7d4e00;
+      margin-top: 24px;
+    }
+    .warn-box strong { display: block; margin-bottom: 4px; }
+
+    @media (max-width: 600px) {
+      .demo-pair { grid-template-columns: 1fr; }
+      .stat-bar { gap: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ヒーロー -->
+  <div class="page-hero">
+    <div class="breadcrumb"><a href="index.html">ホーム</a> / GitHub Copilot</div>
+    <div class="copilot-icon-hero">🤖</div>
+    <div class="hero-badge">AI-Powered Coding Assistant</div>
+    <h1>GitHub Copilot</h1>
+    <p>AI がリアルタイムでコードを提案。ボイラープレートの自動生成からテスト・ドキュメント作成まで、開発者の生産性を大幅に向上させます。</p>
+    <a href="#setup" class="btn-primary">セットアップガイドへ</a>
+
+    <div class="stat-bar">
+      <div class="stat-item">
+        <div class="stat-num">55%</div>
+        <div class="stat-label">コーディング速度の向上<br/>（GitHub 調査）</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">74%</div>
+        <div class="stat-label">集中力が維持できると<br/>回答した開発者の割合</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">46%</div>
+        <div class="stat-label">Copilot が生成した<br/>コードの採用率</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copilot とは -->
+  <section class="section about">
+    <div class="container">
+      <h2>GitHub Copilot とは？</h2>
+      <p style="text-align:center;color:#57606a;max-width:720px;margin:0 auto 40px;font-size:1.05rem;">
+        GitHub Copilot は OpenAI の大規模言語モデルを活用した <strong>AI ペアプログラマー</strong>です。
+        エディタ上でコメントや関数名を書くだけで、文脈に応じたコードを自動提案します。
+        VS Code・JetBrains・Vim など主要エディタに対応しています。
+      </p>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="fc-icon">✨</div>
+          <h3>インライン コード補完</h3>
+          <p>入力中にリアルタイムでコードを提案。Tab キーで採用、複数の候補から選択も可能です。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">💬</div>
+          <h3>Copilot Chat</h3>
+          <p>エディタ内でチャット形式で質問。コードの説明・バグ修正・リファクタリング案をその場で取得できます。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🧪</div>
+          <h3>テスト自動生成</h3>
+          <p>関数・クラスを選択して「テストを生成」するだけで、ユニットテストのひな形を自動作成します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">📝</div>
+          <h3>ドキュメント生成</h3>
+          <p>コードブロックから JSDoc・docstring・README の下書きを自動生成。ドキュメント整備の工数を削減します。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔍</div>
+          <h3>コードレビュー支援</h3>
+          <p>PR に Copilot をレビュアーとして追加すると、バグ・セキュリティリスク・改善点を自動でコメントします。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🖥️</div>
+          <h3>CLI サポート</h3>
+          <p>ターミナルで自然言語から git・npm・docker などのコマンドを提案。コマンド忘れのストレスを解消します。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- デモ -->
+  <section class="section alt-bg">
+    <div class="container">
+      <h2>こんなふうに使える</h2>
+
+      <h3 style="font-size:1rem;font-weight:600;margin:0 0 12px;">例① コメントからコードを生成</h3>
+      <div class="demo-pair">
+        <div class="demo-box">
+          <div class="demo-box-header before">✏️ あなたが書いたコメント</div>
+          <pre><span class="comment">// ユーザーのメールアドレスが
+// 有効な形式かチェックする関数</span>
+<span class="keyword">function</span> <span class="fn">isValidEmail</span>(email) {</pre>
+        </div>
+        <div class="demo-box">
+          <div class="demo-box-header after">🤖 Copilot が提案したコード</div>
+          <pre><span class="comment">// ユーザーのメールアドレスが
+// 有効な形式かチェックする関数</span>
+<span class="keyword">function</span> <span class="fn">isValidEmail</span>(email) {
+<span class="copilot-suggest">  <span class="keyword">const</span> regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  <span class="keyword">return</span> regex.<span class="fn">test</span>(email);
+}</span></pre>
+        </div>
+      </div>
+
+      <h3 style="font-size:1rem;font-weight:600;margin:0 0 12px;">例② テストを自動生成</h3>
+      <div class="demo-pair">
+        <div class="demo-box">
+          <div class="demo-box-header before">✏️ 既存の関数</div>
+          <pre><span class="keyword">function</span> <span class="fn">add</span>(a, b) {
+  <span class="keyword">return</span> a + b;
+}</pre>
+        </div>
+        <div class="demo-box">
+          <div class="demo-box-header after">🤖 Copilot が生成したテスト</div>
+          <pre><span class="copilot-suggest"><span class="fn">describe</span>(<span class="string">'add'</span>, () => {
+  <span class="fn">it</span>(<span class="string">'正の整数を足し算する'</span>, () => {
+    <span class="fn">expect</span>(<span class="fn">add</span>(2, 3)).<span class="fn">toBe</span>(5);
+  });
+  <span class="fn">it</span>(<span class="string">'負の数を扱う'</span>, () => {
+    <span class="fn">expect</span>(<span class="fn">add</span>(-1, 1)).<span class="fn">toBe</span>(0);
+  });
+});</span></pre>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <strong>💡 より良い提案を得るコツ</strong>
+        コメントは具体的に書くほど精度が上がります。「関数を作る」より「〇〇を引数に受け取り、△△を返す関数」のように記述しましょう。
+      </div>
+    </div>
+  </section>
+
+  <!-- セットアップ -->
+  <section class="section" id="setup">
+    <div class="container">
+      <h2>セットアップ手順</h2>
+      <div class="setup-steps">
+
+        <div class="setup-step">
+          <div class="setup-step-num">1</div>
+          <div class="setup-step-body">
+            <h3>ライセンスの確認・割り当て</h3>
+            <p>管理者が GitHub Enterprise の Organization 設定から Copilot ライセンスをユーザーに割り当てます。利用希望者は管理者または <a href="support-email.html">サポートメール</a> に申請してください。</p>
+          </div>
+        </div>
+
+        <div class="setup-step">
+          <div class="setup-step-num">2</div>
+          <div class="setup-step-body">
+            <h3>VS Code への拡張機能インストール</h3>
+            <p>VS Code の拡張機能マーケットプレイスで <code>GitHub Copilot</code> と <code>GitHub Copilot Chat</code> を検索してインストールします。JetBrains・Vim・Neovim にも対応しています。</p>
+          </div>
+        </div>
+
+        <div class="setup-step">
+          <div class="setup-step-num">3</div>
+          <div class="setup-step-body">
+            <h3>GitHub アカウントでサインイン</h3>
+            <p>拡張機能インストール後、エディタ右下の Copilot アイコンをクリックし、社内 SSO アカウントでサインイン。ライセンスが割り当て済みであれば即時利用開始できます。</p>
+          </div>
+        </div>
+
+        <div class="setup-step">
+          <div class="setup-step-num">4</div>
+          <div class="setup-step-body">
+            <h3>動作確認</h3>
+            <p>任意のファイルを開き、コメントを書いて Tab キーで提案が表示されれば設定完了です。表示されない場合はエディタ右下の Copilot ステータスアイコンを確認してください。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 利用ポリシー -->
+  <section class="section alt-bg">
+    <div class="container">
+      <h2>利用ポリシー</h2>
+      <p style="color:#57606a;font-size:0.9rem;margin-bottom:20px;">Copilot を安全に活用するために、以下のポリシーを遵守してください。</p>
+      <table class="policy-table">
+        <thead>
+          <tr><th>カテゴリ</th><th>内容</th><th>可否</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>業務コードへの利用</td>
+            <td>社内リポジトリ・業務プロジェクトでのコード補完・Chat 利用</td>
+            <td><span class="badge-ok">可</span></td>
+          </tr>
+          <tr>
+            <td>提案コードの採用</td>
+            <td>提案されたコードはそのまま採用せず、必ず内容を理解・レビューしてから使用</td>
+            <td><span class="badge-caution">要確認</span></td>
+          </tr>
+          <tr>
+            <td>機密情報の入力</td>
+            <td>API キー・パスワード・個人情報を Copilot Chat に貼り付けること</td>
+            <td><span class="badge-ng">禁止</span></td>
+          </tr>
+          <tr>
+            <td>社外秘コードの送信</td>
+            <td>公開禁止の独自アルゴリズム・設計情報を Copilot に入力すること（テレメトリ設定を確認）</td>
+            <td><span class="badge-caution">要確認</span></td>
+          </tr>
+          <tr>
+            <td>ライセンスの転用</td>
+            <td>割り当てられたライセンスを他者に貸与・共有すること</td>
+            <td><span class="badge-ng">禁止</span></td>
+          </tr>
+          <tr>
+            <td>生成コードの著作権</td>
+            <td>Copilot が生成したコードの著作権帰属に関する確認は法務部に相談</td>
+            <td><span class="badge-caution">要確認</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warn-box">
+        <strong>⚠️ 生成コードは必ずレビューを</strong>
+        Copilot の提案は正確とは限りません。セキュリティ脆弱性・バグ・ライセンス問題を含む場合があります。採用前に必ずコードを理解し、テストを実施してください。
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="container">
+      <h2>よくある質問</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>Copilot のライセンスはどこに申請しますか？</summary>
+          <p>管理者または <a href="support-email.html">サポートメール（github-admin@example.com）</a> に利用申請をしてください。所属チームと利用目的を記載してください。</p>
+        </details>
+        <details class="faq-item">
+          <summary>VS Code 以外のエディタでも使えますか？</summary>
+          <p>JetBrains 系 IDE（IntelliJ・PyCharm・GoLand など）、Vim / Neovim、Azure Data Studio、Xcode（Copilot for Xcode）に対応しています。各エディタの公式ドキュメントを参照してインストールしてください。</p>
+        </details>
+        <details class="faq-item">
+          <summary>入力したコードは学習データに使われますか？</summary>
+          <p>GitHub Enterprise の Copilot では、デフォルトでコードスニペットが学習に使用されない設定になっています。詳細は管理者に確認するか、Organization の Copilot ポリシー設定をご確認ください。</p>
+        </details>
+        <details class="faq-item">
+          <summary>Copilot が提案したコードに問題があった場合の責任は？</summary>
+          <p>Copilot の提案を採用・コミットした開発者が責任を持ちます。提案コードは必ずレビューし、テストを通してから使用してください。不明な場合はチームリードに相談してください。</p>
+        </details>
+        <details class="faq-item">
+          <summary>提案が表示されない・うまく動かない場合は？</summary>
+          <p>① VS Code の右下の Copilot アイコンが有効（グレーでない）か確認 ② ライセンスが割り当てられているか確認 ③ 拡張機能を最新版にアップデート の順で確認してください。解決しない場合は <a href="chat-support.html">Chat 問い合わせ</a> へ。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- フッター -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-nav">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <svg height="24" viewBox="0 0 16 16" fill="white"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            <span>GitHub Enterprise</span>
+          </div>
+          <p class="footer-tagline">社内開発チームの共通プラットフォーム。<br/>安全・効率的な開発を支援します。</p>
+        </div>
+        <div class="footer-col">
+          <h4>ドキュメント</h4>
+          <ul>
+            <li><a href="#">GitHub Enterprise ドキュメント</a></li>
+            <li><a href="#">社内 Wiki</a></li>
+            <li><a href="secure-code-repository.md">セキュアコードガイド</a></li>
+            <li><a href="project-draft.md">企画ドラフト</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>支援</h4>
+          <ul>
+            <li><a href="support-email.html">サポートメール</a></li>
+            <li><a href="security-standards.html">セキュリティ基準</a></li>
+            <li><a href="chat-support.html">Chat 問い合わせ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>法的情報</h4>
+          <ul>
+            <li><a href="#">利用規約</a></li>
+            <li><a href="#">プライバシーポリシー</a></li>
+            <li><a href="#">情報セキュリティ方針</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">
+          &copy; 2026 株式会社〇〇 All rights reserved.<br/>
+          本ポータルに掲載されているすべてのコンテンツは社外秘です。無断転載・無断複製・社外への開示を禁じます。
+        </p>
+        <p class="footer-note">本サイトは社内利用に限定されています。アクセス・利用は社内規程に従ってください。</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
