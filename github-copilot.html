@@ -198,9 +198,69 @@
     }
     .warn-box strong { display: block; margin-bottom: 4px; }
 
+    /* はじめに セクション */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 0;
+    }
+    .intro-card {
+      background: white;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      padding: 22px 20px;
+    }
+    .intro-card .ic-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .intro-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
+    .intro-card p { font-size: 0.85rem; color: #57606a; line-height: 1.6; }
+    .intro-card a { font-size: 0.85rem; }
+
+    /* ライセンス比較テーブル */
+    .license-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      margin-top: 8px;
+    }
+    .license-table th, .license-table td {
+      text-align: center;
+      padding: 10px 14px;
+      border: 1px solid #d0d7de;
+      vertical-align: middle;
+    }
+    .license-table th { background: #f6f8fa; font-weight: 600; }
+    .license-table td:first-child { text-align: left; font-weight: 500; }
+    .license-table .col-business { background: #dafbe1; }
+    .license-table .col-business th { background: #116329; color: white; }
+    .license-table .recommended-badge {
+      display: inline-block;
+      background: #116329;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .alert-box {
+      background: #ffebe9;
+      border: 1px solid #ff8182;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 0.9rem;
+      color: #82071e;
+      margin-top: 20px;
+    }
+    .alert-box strong { display: block; margin-bottom: 4px; }
+
     @media (max-width: 600px) {
       .demo-pair { grid-template-columns: 1fr; }
       .stat-bar { gap: 28px; }
+      .license-table { font-size: 0.78rem; }
+      .license-table th, .license-table td { padding: 8px 6px; }
     }
   </style>
 </head>
@@ -231,10 +291,155 @@
     </div>
   </div>
 
-  <!-- Copilot とは -->
-  <section class="section about">
+  <!-- はじめに -->
+  <section class="section alt-bg">
     <div class="container">
-      <h2>GitHub Copilot とは？</h2>
+      <h2>はじめに</h2>
+      <div class="intro-grid">
+
+        <div class="intro-card">
+          <div class="ic-icon">💳</div>
+          <h3>ライセンス種別と料金</h3>
+          <p>社内で利用できるのは <strong>Business ライセンス</strong>のみです。個人ライセンスはクライアント業務での使用が許可されていません。</p>
+          <a href="#license">詳細を見る ↓</a>
+        </div>
+
+        <div class="intro-card">
+          <div class="ic-icon">🔐</div>
+          <h3>データプライバシー</h3>
+          <p>Business / Enterprise ライセンスでは、入力したコードや提案データが <strong>学習に使用されません</strong>。社内コードの外部送信ポリシーも確認してください。</p>
+          <a href="#privacy">詳細を見る ↓</a>
+        </div>
+
+        <div class="intro-card">
+          <div class="ic-icon">📖</div>
+          <h3>使い方</h3>
+          <p>コード補完・Copilot Chat・テスト生成・CLI など、すぐに使える機能の概要と Before/After のデモを掲載しています。</p>
+          <a href="#howto">詳細を見る ↓</a>
+        </div>
+
+        <div class="intro-card">
+          <div class="ic-icon">⚙️</div>
+          <h3>セットアップ</h3>
+          <p>ライセンス申請から VS Code への拡張機能インストール、動作確認まで4ステップで完了します。</p>
+          <a href="#setup">詳細を見る ↓</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ライセンス種別・料金 -->
+  <section class="section" id="license">
+    <div class="container">
+      <h2>ライセンス種別と料金</h2>
+      <p style="color:#57606a;font-size:0.9rem;margin-bottom:20px;">
+        GitHub Copilot には3つのプランがあります。<strong>社内での業務利用・クライアント業務での利用は Business ライセンスのみ許可</strong>されています。
+      </p>
+
+      <table class="license-table">
+        <thead>
+          <tr>
+            <th>項目</th>
+            <th>Individual<br/><span style="font-weight:400;font-size:0.8rem;">個人向け</span></th>
+            <th class="col-business">Business<span class="recommended-badge">社内利用</span><br/><span style="font-weight:400;font-size:0.8rem;">法人向け</span></th>
+            <th>Enterprise<br/><span style="font-weight:400;font-size:0.8rem;">大規模法人向け</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>月額料金（1ユーザー）</td>
+            <td>$10 / 月</td>
+            <td class="col-business">$19 / 月</td>
+            <td>$39 / 月</td>
+          </tr>
+          <tr>
+            <td>コード補完・Copilot Chat</td>
+            <td>✅</td>
+            <td class="col-business">✅</td>
+            <td>✅</td>
+          </tr>
+          <tr>
+            <td>学習データへの不使用保証</td>
+            <td>❌</td>
+            <td class="col-business">✅</td>
+            <td>✅</td>
+          </tr>
+          <tr>
+            <td>組織単位のポリシー管理</td>
+            <td>❌</td>
+            <td class="col-business">✅</td>
+            <td>✅</td>
+          </tr>
+          <tr>
+            <td>監査ログ</td>
+            <td>❌</td>
+            <td class="col-business">✅</td>
+            <td>✅</td>
+          </tr>
+          <tr>
+            <td>社内ナレッジベース連携</td>
+            <td>❌</td>
+            <td class="col-business">❌</td>
+            <td>✅</td>
+          </tr>
+          <tr>
+            <td><strong>クライアント業務での利用</strong></td>
+            <td><span class="badge-ng">禁止</span></td>
+            <td class="col-business"><span class="badge-ok">許可</span></td>
+            <td><span class="badge-ok">許可</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="alert-box">
+        <strong>🚫 個人ライセンス（Individual）はクライアント業務で使用できません</strong>
+        個人ライセンスは GitHub の利用規約上、業務成果物への適用が制限されており、クライアントへの納品物にCopilot生成コードを含めることが認められていません。
+        業務・クライアント案件には必ず <strong>Business ライセンス</strong>を使用してください。ライセンス申請は <a href="support-email.html" style="color:#82071e;font-weight:600;">管理者へ問い合わせ</a> ください。
+      </div>
+    </div>
+  </section>
+
+  <!-- データプライバシー -->
+  <section class="section alt-bg" id="privacy">
+    <div class="container">
+      <h2>データプライバシー</h2>
+      <p style="color:#57606a;font-size:0.9rem;margin-bottom:24px;">
+        社内コードがどのように扱われるか、Business ライセンスのデータ保護方針を確認してください。
+      </p>
+      <div class="feature-grid" style="margin-bottom:24px;">
+        <div class="feature-card">
+          <div class="fc-icon">🚫</div>
+          <h3>学習への不使用</h3>
+          <p>Business / Enterprise では、入力コード・プロンプト・提案内容が GitHub / OpenAI の AI モデル学習に<strong>使用されません</strong>。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🗄️</div>
+          <h3>データの保持期間</h3>
+          <p>送信されたコードスニペットはリクエスト処理後に破棄されます。28 日以上の保存は行われません（Copilot Chat のログを除く）。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🌏</div>
+          <h3>データの処理場所</h3>
+          <p>コードは GitHub のサーバー（米国）で処理されます。社内の機密情報保護ポリシーに基づき、入力内容を適切に管理してください。</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🏢</div>
+          <h3>管理者によるポリシー制御</h3>
+          <p>Organization 管理者はテレメトリの有効化・無効化、利用可能な機能の制限を Organization 単位で設定できます。</p>
+        </div>
+      </div>
+      <div class="warn-box">
+        <strong>⚠️ 入力してはいけない情報</strong>
+        API キー・パスワード・個人情報（氏名・メールアドレスなど）・顧客の機密データ・社外秘の独自アルゴリズムは Copilot Chat に貼り付けないでください。
+      </div>
+    </div>
+  </section>
+
+  <!-- Copilot とは / 使い方 -->
+  <section class="section about" id="howto">
+    <div class="container">
+      <h2>GitHub Copilot とは？ / 使い方</h2>
       <p style="text-align:center;color:#57606a;max-width:720px;margin:0 auto 40px;font-size:1.05rem;">
         GitHub Copilot は OpenAI の大規模言語モデルを活用した <strong>AI ペアプログラマー</strong>です。
         エディタ上でコメントや関数名を書くだけで、文脈に応じたコードを自動提案します。
@@ -381,8 +586,13 @@
         <tbody>
           <tr>
             <td>業務コードへの利用</td>
-            <td>社内リポジトリ・業務プロジェクトでのコード補完・Chat 利用</td>
+            <td>社内リポジトリ・業務プロジェクトでのコード補完・Chat 利用（Business ライセンス使用時）</td>
             <td><span class="badge-ok">可</span></td>
+          </tr>
+          <tr>
+            <td><strong>個人ライセンスでのクライアント業務利用</strong></td>
+            <td>Individual ライセンスを使用してクライアント向け納品物・業務成果物に Copilot 生成コードを含めること</td>
+            <td><span class="badge-ng">禁止</span></td>
           </tr>
           <tr>
             <td>提案コードの採用</td>
