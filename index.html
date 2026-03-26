@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GitHub Enterprise ポータル</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="logo">
+        <svg height="40" viewBox="0 0 16 16" aria-hidden="true" fill="white">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
+            0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13
+            -.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
+            .07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15
+            -.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27
+            .68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12
+            .51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48
+            0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span>GitHub Enterprise</span>
+      </div>
+      <h1>開発チームの力を、<br/>ひとつのプラットフォームへ</h1>
+      <p class="hero-sub">GitHub Enterprise は、コードの管理・レビュー・自動化・セキュリティをエンタープライズ品質で提供する開発プラットフォームです。</p>
+      <a href="#getting-started" class="btn-primary">はじめる</a>
+    </div>
+  </header>
+
+  <!-- GitHub Enterprise とは -->
+  <section class="section about">
+    <div class="container">
+      <h2>GitHub Enterprise とは？</h2>
+      <p>
+        GitHub Enterprise は、世界中の開発者が利用する GitHub の機能を、<strong>企業内のセキュリティ・コンプライアンス要件</strong>に対応した形で提供するプラットフォームです。
+        ソースコードの管理から、チームのコラボレーション、CI/CD パイプライン、セキュリティスキャンまで、ソフトウェア開発のライフサイクル全体をカバーします。
+      </p>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">🔒</div>
+          <h3>エンタープライズセキュリティ</h3>
+          <p>SAML SSO・SCIM による ID 管理、監査ログ、IP 許可リストなど、企業要件に対応したセキュリティ機能を提供。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤝</div>
+          <h3>チームコラボレーション</h3>
+          <p>Pull Request によるコードレビュー、Issue トラッキング、プロジェクト管理ボードで、チームの生産性を向上。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <h3>GitHub Actions (CI/CD)</h3>
+          <p>コードのプッシュをトリガーにテスト・ビルド・デプロイを自動化。YAMLベースのワークフローで簡単に構成可能。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🛡️</div>
+          <h3>Advanced Security</h3>
+          <p>コードスキャン、シークレットスキャン、依存関係レビューで、脆弱性を早期に検知・修正。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 主な機能 -->
+  <section class="section features alt-bg">
+    <div class="container">
+      <h2>主な機能</h2>
+      <div class="feature-list">
+
+        <div class="feature-item">
+          <div class="feature-icon">📁</div>
+          <div class="feature-body">
+            <h3>リポジトリ管理</h3>
+            <p>ソースコードを Git リポジトリで管理。ブランチ戦略（Git Flow / GitHub Flow）により、複数人での並行開発が可能です。アクセス権限はリポジトリ・Organization・Team 単位で細かく制御できます。</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">🔍</div>
+          <div class="feature-body">
+            <h3>Pull Request & コードレビュー</h3>
+            <p>変更内容を Pull Request（PR）として提出し、チームメンバーがレビュー・承認するワークフロー。差分の確認、コメント、提案変更が1画面で完結します。必須レビュアー設定やブランチ保護ルールで品質を担保。</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">🐛</div>
+          <div class="feature-body">
+            <h3>Issues & プロジェクト管理</h3>
+            <p>タスク・バグ・機能要望を Issue として管理。ラベル・マイルストーン・担当者を設定し、プロジェクトボード（カンバン形式）で進捗を可視化できます。</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">⚙️</div>
+          <div class="feature-body">
+            <h3>GitHub Actions</h3>
+            <p>YAML ファイルでワークフローを定義し、テスト・静的解析・ビルド・デプロイを自動実行。マーケットプレイスに公開された再利用可能なアクションを組み合わせて、素早くパイプラインを構築できます。</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">📦</div>
+          <div class="feature-body">
+            <h3>GitHub Packages</h3>
+            <p>npm・Maven・Docker などのパッケージレジストリをリポジトリと同じ場所で管理。プライベートパッケージの共有・バージョン管理が容易に行えます。</p>
+          </div>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon">📖</div>
+          <div class="feature-body">
+            <h3>Wiki & GitHub Pages</h3>
+            <p>リポジトリに付属する Wiki でドキュメントを管理。GitHub Pages を使えば静的サイトをリポジトリから直接公開できます（社内イントラネット公開も設定可能）。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- はじめかた -->
+  <section class="section getting-started" id="getting-started">
+    <div class="container">
+      <h2>はじめかた</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h3>アカウントへのアクセス</h3>
+            <p>管理者から招待メールが届きます。メール内のリンクからアカウントを有効化し、SSO（シングルサインオン）でログインしてください。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h3>Git のセットアップ</h3>
+            <p>ローカルPCに Git をインストールし、SSH キーまたは個人アクセストークン（PAT）を設定します。詳細は社内 Wiki の「Git セットアップガイド」を参照してください。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h3>Organization / チームへの参加</h3>
+            <p>所属部署の Organization に追加してもらい、必要なリポジトリへのアクセス権を取得します。チームリードまたは管理者に連絡してください。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h3>最初のコントリビューション</h3>
+            <p>リポジトリをクローンし、ブランチを切って変更をコミット。Pull Request を作成してレビューを依頼しましょう。詳細は「GitHub Flow ガイド」をご覧ください。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- よくある質問 -->
+  <section class="section faq alt-bg">
+    <div class="container">
+      <h2>よくある質問</h2>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>GitHub.com（パブリック）との違いは何ですか？</summary>
+          <p>GitHub Enterprise は、企業向けに管理・セキュリティ機能が強化されたプランです。SAML SSO による認証、監査ログ、IP制限、SCIM によるユーザー管理などが追加されており、社内データを安全に管理できます。</p>
+        </details>
+        <details class="faq-item">
+          <summary>リポジトリを誤って公開してしまった場合はどうすればよいですか？</summary>
+          <p>すぐにリポジトリの設定から「Visibility」をPrivateに変更してください。その後、セキュリティチームおよびリポジトリ管理者に報告し、公開されたコンテンツに機密情報が含まれていないか確認します。</p>
+        </details>
+        <details class="faq-item">
+          <summary>Personal Access Token (PAT) はどこで作成しますか？</summary>
+          <p>GitHub にログイン後、右上のアイコン → Settings → Developer settings → Personal access tokens から作成できます。スコープは必要最小限に設定し、有効期限を設けることを推奨します。</p>
+        </details>
+        <details class="faq-item">
+          <summary>Actions のワークフローが失敗した場合、どこを確認すればよいですか？</summary>
+          <p>リポジトリの「Actions」タブから実行履歴を確認できます。失敗したジョブをクリックするとログが表示され、エラーの詳細を確認できます。</p>
+        </details>
+        <details class="faq-item">
+          <summary>社外のメンバーをリポジトリに追加できますか？</summary>
+          <p>Outside Collaborator として追加することが可能ですが、社内ポリシーの確認が必要です。追加前にセキュリティ担当者・管理者に申請してください。</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- フッター -->
+  <footer class="footer">
+    <div class="container">
+      <p>社内 GitHub Enterprise ポータル &mdash; 管理者へのお問い合わせは社内チケットシステムよりどうぞ。</p>
+      <p class="footer-links">
+        <a href="#">GitHub Enterprise ドキュメント</a>
+        <a href="#">社内 Wiki</a>
+        <a href="#">管理者へ問い合わせ</a>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
