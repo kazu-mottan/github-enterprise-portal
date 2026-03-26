@@ -258,11 +258,37 @@
     }
     .alert-box strong { display: block; margin-bottom: 4px; }
 
+    /* ドキュメントリンクカード */
+    .doc-link-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: white;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      padding: 20px 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .doc-link-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      border-color: #0969da;
+      text-decoration: none;
+    }
+    .doc-link-icon { font-size: 2rem; flex-shrink: 0; }
+    .doc-link-body { flex: 1; }
+    .doc-link-title { font-weight: 600; font-size: 1rem; color: #0969da; margin-bottom: 4px; }
+    .doc-link-desc { font-size: 0.88rem; color: #57606a; line-height: 1.5; }
+    .doc-link-arrow { font-size: 1.2rem; color: #57606a; flex-shrink: 0; }
+
     @media (max-width: 600px) {
       .demo-pair { grid-template-columns: 1fr; }
       .stat-bar { gap: 28px; }
       .license-table { font-size: 0.78rem; }
       .license-table th, .license-table td { padding: 8px 6px; }
+      .doc-link-card { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .doc-link-arrow { display: none; }
     }
   </style>
 </head>
@@ -405,8 +431,8 @@
 
       <div class="alert-box">
         <strong>🚫 個人ライセンス（Individual）はクライアント業務で使用できません</strong>
-        個人ライセンスは GitHub の利用規約上、業務成果物への適用が制限されており、クライアントへの納品物にCopilot生成コードを含めることが認められていません。
-        業務・クライアント案件には必ず <strong>Business ライセンス</strong>を使用してください。ライセンス申請は <a href="support-email.html" style="color:#82071e;font-weight:600;">管理者へ問い合わせ</a> ください。
+        <p style="margin:8px 0 0;">個人ライセンスは GitHub の利用規約上、業務成果物への適用が制限されており、クライアントへの納品物に Copilot 生成コードを含めることが認められていません。</p>
+        <p style="margin:8px 0 0;">業務・クライアント案件には必ず <strong>Business ライセンス</strong> を使用してください。ライセンス申請は <a href="support-email.html" style="color:#82071e;font-weight:600;">管理者へ問い合わせ</a> ください。</p>
       </div>
     </div>
   </section>
@@ -416,34 +442,16 @@
     <div class="container">
       <h2>データプライバシー</h2>
       <p style="color:#57606a;font-size:0.9rem;margin-bottom:24px;">
-        社内コードがどのように扱われるか、Business ライセンスのデータ保護方針を確認してください。
+        社内コードがどのように扱われるか、詳細はドキュメントを確認してください。
       </p>
-      <div class="feature-grid" style="margin-bottom:24px;">
-        <div class="feature-card">
-          <div class="fc-icon">🚫</div>
-          <h3>学習への不使用</h3>
-          <p>Business / Enterprise では、入力コード・プロンプト・提案内容が GitHub / OpenAI の AI モデル学習に<strong>使用されません</strong>。</p>
+      <a href="copilot-data-privacy.md" class="doc-link-card">
+        <div class="doc-link-icon">📄</div>
+        <div class="doc-link-body">
+          <div class="doc-link-title">GitHub Copilot データプライバシーポリシー</div>
+          <div class="doc-link-desc">学習への不使用保証・データ保持期間・処理場所・入力禁止情報・管理者によるポリシー制御について詳しく説明しています。</div>
         </div>
-        <div class="feature-card">
-          <div class="fc-icon">🗄️</div>
-          <h3>データの保持期間</h3>
-          <p>送信されたコードスニペットはリクエスト処理後に破棄されます。28 日以上の保存は行われません（Copilot Chat のログを除く）。</p>
-        </div>
-        <div class="feature-card">
-          <div class="fc-icon">🌏</div>
-          <h3>データの処理場所</h3>
-          <p>コードは GitHub のサーバー（米国）で処理されます。社内の機密情報保護ポリシーに基づき、入力内容を適切に管理してください。</p>
-        </div>
-        <div class="feature-card">
-          <div class="fc-icon">🏢</div>
-          <h3>管理者によるポリシー制御</h3>
-          <p>Organization 管理者はテレメトリの有効化・無効化、利用可能な機能の制限を Organization 単位で設定できます。</p>
-        </div>
-      </div>
-      <div class="warn-box">
-        <strong>⚠️ 入力してはいけない情報</strong>
-        API キー・パスワード・個人情報（氏名・メールアドレスなど）・顧客の機密データ・社外秘の独自アルゴリズムは Copilot Chat に貼り付けないでください。
-      </div>
+        <div class="doc-link-arrow">→</div>
+      </a>
     </div>
   </section>
 
