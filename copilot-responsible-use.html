@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsible Use of GitHub Copilot — 同意書</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      padding: 48px 24px;
+      text-align: center;
+    }
+    .page-hero .breadcrumb { font-size: 0.85rem; opacity: 0.6; margin-bottom: 16px; }
+    .page-hero .breadcrumb a { color: white; }
+    .page-hero h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 8px; }
+    .page-hero .sub { font-size: 0.9rem; opacity: 0.7; }
+
+    /* フォームカード */
+    .form-card {
+      background: white;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+    .form-card h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #0969da;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .form-card h2 .section-num {
+      background: #0969da;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    /* 入力フィールド */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .form-row.single { grid-template-columns: 1fr; }
+    .form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #24292f;
+    }
+    .form-group label .required {
+      color: #cf222e;
+      margin-left: 4px;
+    }
+    .form-group input, .form-group select {
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      padding: 9px 12px;
+      font-size: 0.9rem;
+      color: #24292f;
+      background: #f6f8fa;
+      transition: border-color 0.15s, background 0.15s;
+      width: 100%;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #0969da;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(9,105,218,0.12);
+    }
+
+    /* 規約テキストエリア */
+    .terms-box {
+      background: #f6f8fa;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      padding: 20px;
+      font-size: 0.875rem;
+      line-height: 1.8;
+      color: #24292f;
+      max-height: 280px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+    .terms-box h3 {
+      font-size: 0.875rem;
+      font-weight: 700;
+      margin: 16px 0 6px;
+      color: #24292f;
+    }
+    .terms-box h3:first-child { margin-top: 0; }
+    .terms-box ul {
+      padding-left: 20px;
+      margin: 4px 0;
+    }
+    .terms-box ul li { margin-bottom: 4px; }
+    .terms-box .terms-highlight {
+      background: #ffebe9;
+      border-left: 3px solid #cf222e;
+      padding: 8px 12px;
+      margin: 12px 0;
+      border-radius: 0 4px 4px 0;
+      font-size: 0.85rem;
+    }
+
+    /* チェックボックス */
+    .check-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 8px; }
+    .check-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 12px 16px;
+      background: #f6f8fa;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.1s, border-color 0.1s;
+    }
+    .check-item:hover { background: #eaf5ff; border-color: #0969da; }
+    .check-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 1px;
+      flex-shrink: 0;
+      accent-color: #0969da;
+      cursor: pointer;
+    }
+    .check-item .check-text {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #24292f;
+    }
+    .check-item .check-text strong { color: #cf222e; }
+
+    /* 署名欄 */
+    .sign-date {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: #57606a;
+      margin-bottom: 20px;
+    }
+    .sign-date strong { color: #24292f; }
+
+    /* 送信ボタン */
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-submit {
+      background: #0969da;
+      color: white;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-submit:hover { background: #0860ca; }
+    .btn-submit:disabled {
+      background: #8c959f;
+      cursor: not-allowed;
+    }
+    .btn-print {
+      background: white;
+      color: #24292f;
+      border: 1px solid #d0d7de;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-print:hover { background: #f6f8fa; }
+    .form-note { font-size: 0.8rem; color: #57606a; }
+
+    /* 完了メッセージ */
+    .success-msg {
+      display: none;
+      background: #dafbe1;
+      border: 1px solid #2da44e;
+      border-radius: 8px;
+      padding: 24px;
+      text-align: center;
+      margin-top: 24px;
+    }
+    .success-msg .success-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .success-msg h3 { font-size: 1.1rem; font-weight: 700; color: #116329; margin-bottom: 8px; }
+    .success-msg p { font-size: 0.9rem; color: #116329; }
+
+    .info-banner {
+      background: #ddf4ff;
+      border: 1px solid #54aeff;
+      border-radius: 8px;
+      padding: 14px 20px;
+      font-size: 0.88rem;
+      color: #0550ae;
+      margin-bottom: 24px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 600px) {
+      .form-row, .form-row.triple { grid-template-columns: 1fr; }
+      .form-card { padding: 20px; }
+    }
+
+    @media print {
+      .page-hero, .footer, .btn-print, .btn-submit, .form-note, .info-banner { display: none; }
+      .form-card { border: 1px solid #ccc; box-shadow: none; page-break-inside: avoid; }
+      body { color: black; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-hero">
+    <div class="breadcrumb"><a href="index.html">ホーム</a> / <a href="github-copilot.html">GitHub Copilot</a> / 責任ある利用の同意書</div>
+    <div class="logo" style="justify-content:center;margin-bottom:16px;">
+      <svg height="24" viewBox="0 0 16 16" fill="white"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span>GitHub Enterprise</span>
+    </div>
+    <h1>Responsible Use of GitHub Copilot</h1>
+    <p class="sub">GitHub Copilot 責任ある利用に関する同意書</p>
+  </div>
+
+  <section class="section">
+    <div class="container" style="max-width:760px;">
+
+      <div class="info-banner">
+        <span>ℹ️</span>
+        <span>GitHub Copilot を業務で利用する前に、本同意書への記入・提出が必要です。内容をよく読み、すべての項目に同意の上で送信してください。</span>
+      </div>
+
+      <form id="consentForm" novalidate>
+
+        <!-- セクション1: 本人情報 -->
+        <div class="form-card">
+          <h2><span class="section-num">1</span>本人情報</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label>氏名<span class="required">*</span></label>
+              <input type="text" name="fullname" placeholder="例: 山田 太郎" required />
+            </div>
+            <div class="form-group">
+              <label>社員番号<span class="required">*</span></label>
+              <input type="text" name="employee_id" placeholder="例: EMP-12345" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>部署<span class="required">*</span></label>
+              <input type="text" name="department" placeholder="例: 開発部 第一グループ" required />
+            </div>
+            <div class="form-group">
+              <label>GitHub アカウント名<span class="required">*</span></label>
+              <input type="text" name="github_username" placeholder="例: yamada-taro" required />
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group">
+              <label>社内メールアドレス<span class="required">*</span></label>
+              <input type="email" name="email" placeholder="例: yamada.taro@example.com" required />
+            </div>
+          </div>
+        </div>
+
+        <!-- セクション2: 利用目的 -->
+        <div class="form-card">
+          <h2><span class="section-num">2</span>利用目的</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label>主な利用用途<span class="required">*</span></label>
+              <select name="use_case" required>
+                <option value="">選択してください</option>
+                <option value="internal">社内プロダクト開発</option>
+                <option value="client">クライアント案件（Business ライセンス使用）</option>
+                <option value="both">社内・クライアント両方</option>
+                <option value="research">技術調査・PoC</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>主に使用するエディタ<span class="required">*</span></label>
+              <select name="editor" required>
+                <option value="">選択してください</option>
+                <option value="vscode">VS Code</option>
+                <option value="jetbrains">JetBrains IDE</option>
+                <option value="vim">Vim / Neovim</option>
+                <option value="other">その他</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- セクション3: 利用規約 -->
+        <div class="form-card">
+          <h2><span class="section-num">3</span>利用規約・ポリシー</h2>
+          <p style="font-size:0.88rem;color:#57606a;margin-bottom:14px;">以下の内容をよく読んでください。</p>
+
+          <div class="terms-box">
+            <h3>1. ライセンスの使用について</h3>
+            <ul>
+              <li>本同意書で許可されるのは、会社が契約する <strong>Business ライセンス</strong> の使用のみです。</li>
+              <li>個人ライセンス（Individual）を業務・クライアント案件に使用することは禁止されています。</li>
+              <li>ライセンスを他者と共有・貸与することは禁止されています。</li>
+            </ul>
+            <div class="terms-highlight">
+              🚫 個人ライセンスによるクライアント業務への利用は、GitHub 利用規約上認められていません。
+            </div>
+
+            <h3>2. 入力してはいけない情報</h3>
+            <ul>
+              <li>API キー・アクセストークン・パスワード等の認証情報</li>
+              <li>個人情報（氏名・メールアドレス・マイナンバー等）</li>
+              <li>顧客・取引先の機密情報</li>
+              <li>社外秘の独自アルゴリズム・未公開仕様</li>
+            </ul>
+
+            <h3>3. 生成コードの責任</h3>
+            <ul>
+              <li>Copilot の提案は必ずレビュー・テストしてから採用すること。</li>
+              <li>生成コードに起因する問題の責任は利用者本人が負います。</li>
+              <li>著作権上の懸念がある提案は採用しないこと。</li>
+            </ul>
+
+            <h3>4. クライアント案件での利用</h3>
+            <ul>
+              <li>クライアント案件で使用する前に、クライアントの承認を得ること。</li>
+              <li>クライアントの機密情報を Copilot に入力しないこと。</li>
+              <li>納品物への AI 生成コード含有についてクライアントと合意を取ること。</li>
+            </ul>
+
+            <h3>5. データプライバシー</h3>
+            <ul>
+              <li>Business ライセンスでは入力コードは AI 学習に使用されませんが、GitHub サーバー（米国）への通信は発生します。</li>
+              <li>詳細は <a href="copilot-data-privacy.md">データプライバシーポリシー</a> を参照してください。</li>
+            </ul>
+
+            <h3>6. 違反時の対応</h3>
+            <ul>
+              <li>本ポリシーに違反した場合、Copilot ライセンスを停止することがあります。</li>
+              <li>重大な違反は就業規則に基づく処分の対象となる場合があります。</li>
+            </ul>
+          </div>
+
+          <div class="check-list">
+            <label class="check-item">
+              <input type="checkbox" name="agree_license" required />
+              <span class="check-text">Business ライセンスのみを使用し、<strong>個人ライセンスを業務・クライアント案件に使用しない</strong>ことに同意します。</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="agree_input" required />
+              <span class="check-text">API キー・個人情報・顧客の機密情報など、<strong>入力禁止情報を Copilot に入力しない</strong>ことに同意します。</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="agree_review" required />
+              <span class="check-text">Copilot が提案したコードを必ず<strong>レビュー・テストした上で採用</strong>し、生成コードの品質に責任を持つことに同意します。</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="agree_client" required />
+              <span class="check-text">クライアント案件での利用前に<strong>クライアントの承認を得る</strong>こと、および <a href="copilot-client-checklist.md" target="_blank">クライアントとの確認事項</a> を遵守することに同意します。</span>
+            </label>
+            <label class="check-item">
+              <input type="checkbox" name="agree_policy" required />
+              <span class="check-text">上記すべての利用規約・ポリシーを読み、内容を理解した上で<strong>すべてに同意</strong>します。</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- セクション4: 署名 -->
+        <div class="form-card">
+          <h2><span class="section-num">4</span>署名・提出</h2>
+          <div class="sign-date">
+            <span>同意日:</span>
+            <strong id="todayDate"></strong>
+          </div>
+          <div class="form-row single" style="margin-bottom:24px;">
+            <div class="form-group">
+              <label>氏名（確認のため再入力）<span class="required">*</span></label>
+              <input type="text" name="signature" placeholder="氏名を入力して署名とします" required />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-submit" id="submitBtn">同意して提出する</button>
+            <button type="button" class="btn-print" onclick="window.print()">印刷 / PDF 保存</button>
+            <span class="form-note">※ 提出後、管理者に通知されます。</span>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- 完了メッセージ -->
+      <div class="success-msg" id="successMsg">
+        <div class="success-icon">✅</div>
+        <h3>同意書を提出しました</h3>
+        <p>ご提出ありがとうございます。管理者が内容を確認後、Copilot ライセンスを有効化します。<br/>
+        ご不明な点は <a href="support-email.html">サポートメール</a> または <a href="chat-support.html">Chat</a> にてお問い合わせください。</p>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-nav">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <svg height="24" viewBox="0 0 16 16" fill="white"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            <span>GitHub Enterprise</span>
+          </div>
+          <p class="footer-tagline">社内開発チームの共通プラットフォーム。<br/>安全・効率的な開発を支援します。</p>
+        </div>
+        <div class="footer-col">
+          <h4>ドキュメント</h4>
+          <ul>
+            <li><a href="#">GitHub Enterprise ドキュメント</a></li>
+            <li><a href="#">社内 Wiki</a></li>
+            <li><a href="github-copilot.html">GitHub Copilot</a></li>
+            <li><a href="secure-code-repository.md">セキュアコードガイド</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>支援</h4>
+          <ul>
+            <li><a href="support-email.html">サポートメール</a></li>
+            <li><a href="security-standards.html">セキュリティ基準</a></li>
+            <li><a href="chat-support.html">Chat 問い合わせ</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>法的情報</h4>
+          <ul>
+            <li><a href="#">利用規約</a></li>
+            <li><a href="#">プライバシーポリシー</a></li>
+            <li><a href="#">情報セキュリティ方針</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">
+          &copy; 2026 株式会社〇〇 All rights reserved.<br/>
+          本ポータルに掲載されているすべてのコンテンツは社外秘です。無断転載・無断複製・社外への開示を禁じます。
+        </p>
+        <p class="footer-note">本サイトは社内利用に限定されています。アクセス・利用は社内規程に従ってください。</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 今日の日付を自動セット
+    const today = new Date();
+    const formatted = today.getFullYear() + '年'
+      + (today.getMonth() + 1) + '月'
+      + today.getDate() + '日';
+    document.getElementById('todayDate').textContent = formatted;
+
+    // 全チェックボックスが揃ったらボタンを有効化
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function updateSubmitBtn() {
+      const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+      submitBtn.disabled = !allChecked;
+    }
+    checkboxes.forEach(cb => cb.addEventListener('change', updateSubmitBtn));
+    updateSubmitBtn();
+
+    // フォーム送信
+    document.getElementById('consentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const required = this.querySelectorAll('[required]');
+      let valid = true;
+      required.forEach(field => {
+        field.style.borderColor = '';
+        if (!field.value.trim() && field.type !== 'checkbox') {
+          field.style.borderColor = '#cf222e';
+          valid = false;
+        }
+      });
+      if (!valid) return;
+
+      // 送信完了表示（実際の送信先は管理者が設定）
+      this.style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+
+</body>
+</html>
