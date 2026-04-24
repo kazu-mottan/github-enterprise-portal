@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>セキュリティ基準 GitHub Copilot版 — GitHub Enterprise ポータル</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .page-hero {
+      background: linear-gradient(135deg, #24292f 0%, #0d1117 100%);
+      color: white;
+      padding: 60px 24px;
+      text-align: center;
+    }
+    .page-hero .breadcrumb { font-size: 0.85rem; opacity: 0.6; margin-bottom: 16px; }
+    .page-hero .breadcrumb a { color: white; }
+    .page-hero h1 { font-size: 2rem; font-weight: 700; margin-bottom: 12px; }
+    .page-hero p { opacity: 0.8; max-width: 620px; margin: 0 auto; }
+
+    .standard-block {
+      background: white;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .standard-block-header {
+      background: #f6f8fa;
+      border-bottom: 1px solid #d0d7de;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .standard-block-header .icon { font-size: 1.4rem; }
+    .standard-block-header h3 { font-size: 1rem; font-weight: 600; margin: 0; }
+    .standard-block-body { padding: 20px 24px; }
+
+    .rule-list { list-style: none; padding: 0; margin: 0; }
+    .rule-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 0.9rem;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .rule-list li:last-child { border-bottom: none; }
+    .rule-list li::before { content: '\2705'; flex-shrink: 0; }
+    .rule-list li.warn::before { content: '\26A0\FE0F'; }
+    .rule-list li.ban::before { content: '\1F6AB'; }
+
+    .rule-label {
+      display: inline-block;
+      padding: 1px 7px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-right: 6px;
+      white-space: nowrap;
+    }
+    .label-must { background: #ffebe9; color: #cf222e; }
+    .label-should { background: #fff8c5; color: #9a6700; }
+    .label-ban { background: #ffebe9; color: #cf222e; }
+
+    .alert-box {
+      background: #ffebe9;
+      border: 1px solid #ff8182;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 0.9rem;
+      color: #82071e;
+      margin-bottom: 32px;
+    }
+    .alert-box > strong { display: block; margin-bottom: 4px; }
+
+    .info-box {
+      background: #ddf4ff;
+      border: 1px solid #54aeff;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 0.9rem;
+      color: #0550ae;
+      margin-bottom: 24px;
+    }
+    .info-box > strong { display: block; margin-bottom: 4px; }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin: 12px 0;
+    }
+    .data-table th {
+      background: #f6f8fa;
+      border: 1px solid #d0d7de;
+      padding: 8px 12px;
+      text-align: left;
+      font-weight: 600;
+    }
+    .data-table td {
+      border: 1px solid #d0d7de;
+      padding: 8px 12px;
+    }
+    .data-table tr:nth-child(even) td { background: #fafbfc; }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 20px;
+      text-align: left;
+    }
+
+    code {
+      background: #f6f8fa;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.85em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-hero">
+    <div class="breadcrumb"><a href="index.html">ホーム</a> / 支援 / セキュリティ基準（Copilot版）</div>
+    <div class="logo" style="justify-content:center;margin-bottom:24px;">
+      <svg height="28" viewBox="0 0 16 16" fill="white"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span>GitHub Enterprise</span>
+    </div>
+    <h1>GitHub Copilot セキュリティ基準</h1>
+    <p>GitHub Copilot を安全に利用するために守るべきセキュリティルールをまとめています。<br>全利用者は本基準を遵守してください。</p>
+  </div>
+
+  <section class="section">
+    <div class="container">
+
+      <div class="alert-box">
+        <strong>Copilot 経由の情報漏えい・セキュリティインシデント発生時</strong>
+        機密情報の入力、AI生成コード起因の脆弱性等を発見した場合は、直ちに <a href="support-email.html" style="color:#82071e;font-weight:600;">security@example.com</a> へ連絡してください。
+      </div>
+
+      <div class="info-box">
+        <strong>対象ライセンス</strong>
+        業務での GitHub Copilot 利用は <strong>Business / Enterprise プラン</strong> のみ許可されています。Individual / Pro / Pro+ プランでの業務利用は禁止です。
+      </div>
+
+      <!-- 1. Organization 管理者設定 -->
+      <div class="standard-block">
+        <div class="standard-block-header">
+          <span class="icon">&#9881;</span>
+          <h3>Organization 管理者設定（必須）</h3>
+        </div>
+        <div class="standard-block-body">
+          <p style="font-size:0.85rem;color:#57606a;margin-bottom:12px;">GitHub Organization 管理者は、Copilot を有効化する前に以下の設定を完了すること。</p>
+          <ul class="rule-list">
+            <li><span class="rule-label label-must">必須</span>ライセンスプランを <strong>Business</strong> または <strong>Enterprise</strong> に設定すること。</li>
+            <li><span class="rule-label label-must">必須</span><strong>Suggestions matching public code</strong> を「Blocked」に設定し、パブリックコードフィルターを有効化すること。</li>
+            <li><span class="rule-label label-must">必須</span>Copilot 利用者を <strong>Selected teams / users</strong> に制限し、研修修了者のみに付与すること。</li>
+            <li><span class="rule-label label-must">必須</span>機密リポジトリ・ディレクトリを <strong>Content Exclusion</strong> で Copilot の参照対象から除外すること。</li>
+            <li><span class="rule-label label-must">必須</span>SSO（SAML / Azure AD / Okta）連携を有効にし、個人アカウントでの利用を防止すること。</li>
+            <li><span class="rule-label label-must">必須</span><strong>Secret Scanning</strong> を Organization 全体で有効化すること。</li>
+            <li><span class="rule-label label-must">必須</span><strong>Audit Log</strong> を有効化し、Copilot 関連イベントを記録すること。</li>
+            <li><span class="rule-label label-should">推奨</span>Enterprise プランの場合、Audit Log のストリーミング（Splunk / Datadog 等）を設定すること。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2. 入力データの保護 -->
+      <div class="standard-block">
+        <div class="standard-block-header">
+          <span class="icon">&#128274;</span>
+          <h3>入力データの保護</h3>
+        </div>
+        <div class="standard-block-body">
+          <p style="font-size:0.85rem;color:#57606a;margin-bottom:12px;">Copilot はIDEで開いているファイルの内容をコンテキストとしてサーバーに送信します。以下を遵守してください。</p>
+          <ul class="rule-list">
+            <li class="ban"><span class="rule-label label-ban">禁止</span>API キー・パスワード・トークン・秘密鍵・接続文字列をソースコード中に記述した状態で Copilot を使用すること。</li>
+            <li class="ban"><span class="rule-label label-ban">禁止</span>個人情報（氏名・住所・電話番号・メールアドレス・マイナンバー等）を含むファイルで Copilot を有効にすること。</li>
+            <li class="ban"><span class="rule-label label-ban">禁止</span>顧客から預かったデータ・NDA 対象の機密情報を Copilot Chat に入力すること。</li>
+            <li class="ban"><span class="rule-label label-ban">禁止</span>要配慮個人情報（病歴・犯罪歴・信条・人種等）を Copilot に入力すること。</li>
+            <li><span class="rule-label label-must">必須</span>認証情報は環境変数または GitHub Secrets / Vault 等のシークレット管理ツールで管理すること。</li>
+            <li><span class="rule-label label-must">必須</span><code>.env</code>, <code>credentials.json</code> 等の機密ファイルは <code>.gitignore</code> に追加すること。</li>
+            <li><span class="rule-label label-must">必須</span>プレコミットフック（git-secrets 等）を導入し、機密情報パターンのコミットを自動ブロックすること。</li>
+            <li><span class="rule-label label-should">推奨</span>機密性の高いディレクトリ（例: <code>/secrets</code>, <code>/config/prod</code>）を Content Exclusion に登録すること。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3. AI生成コードのセキュリティ検証 -->
+      <div class="standard-block">
+        <div class="standard-block-header">
+          <span class="icon">&#128269;</span>
+          <h3>AI生成コードのセキュリティ検証</h3>
+        </div>
+        <div class="standard-block-body">
+          <p style="font-size:0.85rem;color:#57606a;margin-bottom:12px;">AI生成コードには脆弱性が含まれる可能性があります（約40%のケースで報告）。以下の検証を必ず実施すること。</p>
+          <ul class="rule-list">
+            <li><span class="rule-label label-must">必須</span>AI生成コードは必ず人間がレビューしてから採用すること。無レビューでの本番適用は禁止。</li>
+            <li><span class="rule-label label-must">必須</span>SAST（静的解析）ツールによる自動スキャンを CI/CD パイプラインに組み込むこと。</li>
+            <li><span class="rule-label label-must">必須</span>Pull Request での他者レビューを経ずに main ブランチへマージしないこと。</li>
+            <li><span class="rule-label label-must">必須</span>AI生成コードにも通常と同等のテストカバレッジ基準を適用すること。</li>
+            <li><span class="rule-label label-should">推奨</span>DAST（動的解析）をステージング環境で定期実行すること。</li>
+            <li><span class="rule-label label-should">推奨</span>GitHub CodeQL を有効化し、セキュリティクエリによる自動スキャンを設定すること。</li>
+          </ul>
+
+          <h4 style="font-size:0.9rem;font-weight:600;margin:16px 0 8px;">レビュー時の重点確認項目</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>カテゴリ</th>
+                <th>確認内容</th>
+                <th>OWASP参照</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>インジェクション</td>
+                <td>SQL インジェクション、コマンドインジェクション、XSS の混入がないか</td>
+                <td>A03:2021</td>
+              </tr>
+              <tr>
+                <td>認証・認可</td>
+                <td>認証バイパスや不適切な権限チェックがないか</td>
+                <td>A01:2021, A07:2021</td>
+              </tr>
+              <tr>
+                <td>機密情報</td>
+                <td>ハードコードされた認証情報・機密値がないか</td>
+                <td>A02:2021</td>
+              </tr>
+              <tr>
+                <td>依存関係</td>
+                <td>存在しないパッケージや悪意あるパッケージを参照していないか（タイポスクワッティング）</td>
+                <td>A06:2021</td>
+              </tr>
+              <tr>
+                <td>暗号</td>
+                <td>非推奨の暗号アルゴリズム（MD5, SHA-1, DES等）が使われていないか</td>
+                <td>A02:2021</td>
+              </tr>
+              <tr>
+                <td>エラー処理</td>
+                <td>過剰なエラー情報の露出（スタックトレース、内部パス等）がないか</td>
+                <td>A09:2021</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. ライセンス・著作権リスク対策 -->
+      <div class="standard-block">
+        <div class="standard-block-header">
+          <span class="icon">&#9878;</span>
+          <h3>ライセンス・著作権リスク対策</h3>
+        </div>
+        <div class="standard-block-body">
+          <ul class="rule-list">
+            <li><span class="rule-label label-must">必須</span>パブリックコードフィルター（Suggestions matching public code = Blocked）を常時有効にすること。</li>
+            <li><span class="rule-label label-must">必須</span>SCA（Software Composition Analysis）ツールで AI生成コードの OSS ライセンス適合性を検証すること。</li>
+            <li><span class="rule-label label-must">必須</span>GPL 等のコピーレフトライセンスに該当するコードパターンの混入に注意し、検出時は即座に対処すること。</li>
+            <li><span class="rule-label label-should">推奨</span>Dependabot を有効化し、依存パッケージのライセンス情報を定期的に確認すること。</li>
+            <li class="warn"><span class="rule-label label-should">注意</span>IP 補償（Copyright Commitment）の適用条件を理解し、パブリックコードフィルター等の前提条件を満たすこと。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 5. データプライバシー・データフロー -->
+      <div class="standard-block">
+        <div class="standard-block-header">
+          <span class="icon">&#127760;</span>
+          <h3>データプライバシー・データフロー</h3>
+        </div>
+        <div class="standard-block-body">
+          <p style="font-size:0.85rem;color:#57606a;margin-bottom:12px;">Copilot のデータ処理について理解し、適切に管理すること。</p>
+
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>データ種別</th>
+                <th>処理内容</th>
+                <th>保持期間</th>
+                <th>学習利用</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>IDE コード補完</td>
+                <td>コード周辺のコンテキストをサーバーに送信</td>
+                <td>リアルタイム処理後即時削除</td>
+                <td>されない（Business/Enterprise）</td>
+              </tr>
+              <tr>
+                <td>Copilot Chat</td>
+                <td>プロンプトをサーバーに送信</td>
+                <td>最大28日間</td>
+                <td>されない（Business/Enterprise）</td>
+              </tr>
+              <tr>
+                <td>提案コード</td>
+                <td>サーバーからIDEに返却</td>
+                <td>キャッシュなし</td>
+                <td>されない</td>
+              </tr>
+              <tr>
+                <td>利用メトリクス</td>
+                <td>利用率・受入率の集計</td>
+                <td>90日間</td>
+                <td>集計データのみ</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <ul class="rule-list" style="margin-top:16px;">
+            <li class="warn"><span class="rule-label label-should">注意</span>Copilot の推論処理は米国/EU のサーバーで行われる（日本リージョン未対応: 2026年4月時点）。</li>
+            <li><span class="rule-label label-must">必須</span>個人データを Copilot に入力しないこと（越境データ移転の問題を回避）。</li>
+            <li><span class="rule-label label-must">必須</span>金融・医療等データレジデンシー要件が厳格な案件では、プロジェクト責任者と法務が利用可否を協議すること。</li>
+            <li><span class="rule-label label-should">推奨</span>GitHub の DPA（Data Protection Agreement）の内容を法務部が確認し、記録すること。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 6. MCP / Extensions / Agent -->
+      <div class="standard-block">
+        <div class="standard-block-header">
+          <span class="icon">&#128268;</span>
+          <h3>MCP・Extensions・Agent のセキュリティ</h3>
+        </div>
+        <div class="standard-block-body">
+          <ul class="rule-list">
+            <li><span class="rule-label label-must">必須</span>MCP（Model Context Protocol）サーバーへの接続は、情報セキュリティ管理者が事前承認したもののみ許可すること。</li>
+            <li><span class="rule-label label-must">必須</span>MCP 接続には最小権限の認証情報を使用すること（広範な PAT の使用禁止）。</li>
+            <li><span class="rule-label label-must">必須</span>Copilot Agent（自律実行モード）の実行結果は、必ず人間がレビューしてから反映すること。</li>
+            <li><span class="rule-label label-must">必須</span>Copilot Extensions（第三者拡張）は、情報セキュリティ管理者の事前評価・承認を経たもののみ利用可とすること。</li>
+            <li class="ban"><span class="rule-label label-ban">禁止</span>未承認の MCP サーバー・Extensions を独自に接続・インストールすること。</li>
+            <li><span class="rule-label label-should">推奨</span>Agent による特権操作（ファイル削除、デプロイ等）には human approval ゲートを設定すること。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 7. アクセス管理・ライセンス管理 -->
+      <div class="standard-block">
+        <div class="standard-block-header">
+          <span class="icon">&#128101;</span>
+          <h3>アクセス管理・ライセンス管理</h3>
+        </div>
+        <div class="standard-block-body">
+          <ul class="rule-list">
+            <li><span class="rule-label label-must">必須</span>Copilot ライセンスは、ガバナンス研修テスト（15点中7点以上）に合格した者のみに付与すること。</li>
+            <li><span class="rule-label label-must">必須</span>退職・異動時にはライセンスを速やかに回収すること（SSO 連携による自動無効化を推奨）。</li>
+            <li><span class="rule-label label-must">必須</span>ライセンスの棚卸しを四半期ごとに実施し、未使用ライセンスを回収すること。</li>
+            <li><span class="rule-label label-should">推奨</span>チーム単位でライセンスを管理し、プロジェクト終了時に不要ライセンスを速やかに解除すること。</li>
+            <li class="ban"><span class="rule-label label-ban">禁止</span>個人の GitHub アカウント（Organization 外）で Copilot を業務利用すること。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 8. ハルシネーション・サプライチェーン対策 -->
+      <div class="standard-block">
+        <div class="standard-block-header">
+          <span class="icon">&#9888;</span>
+          <h3>ハルシネーション・サプライチェーン対策</h3>
+        </div>
+        <div class="standard-block-body">
+          <p style="font-size:0.85rem;color:#57606a;margin-bottom:12px;">Copilot は存在しない API・パッケージを提案したり、悪意あるパッケージ名に類似した名前を生成する場合があります。</p>
+          <ul class="rule-list">
+            <li><span class="rule-label label-must">必須</span>AI が提案した外部パッケージ・ライブラリの実在性を公式レジストリ（npm, PyPI 等）で確認すること。</li>
+            <li><span class="rule-label label-must">必須</span>CI/CD パイプラインでビルド・テストを実行し、存在しない依存関係を検出すること。</li>
+            <li><span class="rule-label label-must">必須</span>提案された API の仕様を公式ドキュメントと照合すること。</li>
+            <li><span class="rule-label label-should">推奨</span>Dependabot / Snyk 等で依存パッケージの脆弱性・信頼性を継続監視すること。</li>
+            <li><span class="rule-label label-should">推奨</span>パッケージのダウンロード数・メンテナンス状況を確認してから採用すること。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 9. 監査・モニタリング -->
+      <div class="standard-block">
+        <div class="standard-block-header">
+          <span class="icon">&#128202;</span>
+          <h3>監査・モニタリング</h3>
+        </div>
+        <div class="standard-block-body">
+          <ul class="rule-list">
+            <li><span class="rule-label label-must">必須</span>Audit Log で Copilot の設定変更・ポリシー変更・ライセンス変更を記録・監視すること。</li>
+            <li><span class="rule-label label-must">必須</span>セキュリティスキャン検出数（AI生成コード起因）を月次でモニタリングすること。</li>
+            <li><span class="rule-label label-must">必須</span>シークレット検出数を月次で確認し、0件を維持すること。</li>
+            <li><span class="rule-label label-should">推奨</span>利用率・提案受入率の推移を月次で確認し、異常なパターンを検知すること。</li>
+            <li><span class="rule-label label-should">推奨</span>四半期レポートを AI-CoE に提出し、セキュリティ状況を経営層に報告すること。</li>
+          </ul>
+
+          <h4 style="font-size:0.9rem;font-weight:600;margin:16px 0 8px;">定期モニタリング指標</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>指標</th>
+                <th>頻度</th>
+                <th>目標値</th>
+                <th>担当</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>セキュリティスキャン検出数（Copilot 起因）</td>
+                <td>月次</td>
+                <td>0件</td>
+                <td>セキュリティ管理者</td>
+              </tr>
+              <tr>
+                <td>シークレット検出・漏洩数</td>
+                <td>月次</td>
+                <td>0件</td>
+                <td>セキュリティ管理者</td>
+              </tr>
+              <tr>
+                <td>ライセンス棚卸し</td>
+                <td>四半期</td>
+                <td>100%完了</td>
+                <td>Org 管理者</td>
+              </tr>
+              <tr>
+                <td>研修修了率</td>
+                <td>四半期</td>
+                <td>100%</td>
+                <td>AI-CoE</td>
+              </tr>
+              <tr>
+                <td>Content Exclusion 設定レビュー</td>
+                <td>四半期</td>
+                <td>全機密リポジトリ対応済み</td>
+                <td>Org 管理者</td>
+              </tr>
+              <tr>
+                <td>インシデント発生数（Copilot 起因）</td>
+                <td>月次</td>
+                <td>0件</td>
+                <td>セキュリティ管理者</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 10. インシデント対応 -->
+      <div class="standard-block">
+        <div class="standard-block-header">
+          <span class="icon">&#128680;</span>
+          <h3>インシデント対応</h3>
+        </div>
+        <div class="standard-block-body">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>レベル</th>
+                <th>事象</th>
+                <th>対応時間</th>
+                <th>報告先</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="color:#cf222e;font-weight:600;">Critical</td>
+                <td>機密情報・個人情報の Copilot 経由での外部漏洩、本番障害</td>
+                <td>1時間以内</td>
+                <td>経営層 / セキュリティ管理者 / 法務</td>
+              </tr>
+              <tr>
+                <td style="color:#cf222e;font-weight:600;">High</td>
+                <td>AI生成コードの脆弱性が本番に混入、ライセンス違反の検出</td>
+                <td>4時間以内</td>
+                <td>AI責任者 / セキュリティ管理者</td>
+              </tr>
+              <tr>
+                <td style="color:#9a6700;font-weight:600;">Medium</td>
+                <td>テスト環境での品質問題検出、不適切なコード提案の報告</td>
+                <td>翌営業日</td>
+                <td>プロジェクト責任者</td>
+              </tr>
+              <tr>
+                <td style="color:#57606a;font-weight:600;">Low</td>
+                <td>Copilot のサービス障害、軽微な設定不備</td>
+                <td>5営業日以内</td>
+                <td>Org 管理者</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <ul class="rule-list" style="margin-top:16px;">
+            <li><span class="rule-label label-must">必須</span>インシデント発見者は上表に従い速やかに報告すること。</li>
+            <li><span class="rule-label label-must">必須</span>Critical / High レベルでは該当コードの即時修正・パッチ適用を行うこと。</li>
+            <li><span class="rule-label label-must">必須</span>全インシデントについて根本原因分析（RCA）を実施し、再発防止策を策定すること。</li>
+            <li><span class="rule-label label-must">必須</span>個人データ漏洩が発生した場合は、個人情報保護法に基づき個人情報保護委員会に速報（3〜5日以内）・確報（30日以内）を行うこと。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 関連ドキュメント -->
+      <div class="standard-block">
+        <div class="standard-block-header">
+          <span class="icon">&#128196;</span>
+          <h3>関連ドキュメント</h3>
+        </div>
+        <div class="standard-block-body">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ドキュメント</th>
+                <th>内容</th>
+                <th>リンク</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>GitHub Copilot 利用ガバナンス・運用規程</td>
+                <td>全39条14章のガバナンス規程（JDLA準拠）</td>
+                <td><a href="copilot-governance-policy.md">copilot-governance-policy.md</a></td>
+              </tr>
+              <tr>
+                <td>GitHub Copilot 責任ある利用の同意書</td>
+                <td>利用開始前の同意フォーム</td>
+                <td><a href="copilot-responsible-use.html">copilot-responsible-use.html</a></td>
+              </tr>
+              <tr>
+                <td>GitHub Copilot データプライバシーポリシー</td>
+                <td>データの取り扱い詳細</td>
+                <td><a href="copilot-data-privacy.md">copilot-data-privacy.md</a></td>
+              </tr>
+              <tr>
+                <td>GitHub Copilot ユーザーガイド</td>
+                <td>開発者向け利用手順</td>
+                <td><a href="copilot-user-guide.md">copilot-user-guide.md</a></td>
+              </tr>
+              <tr>
+                <td>顧客向け Copilot 利用チェックリスト</td>
+                <td>顧客プロジェクトでの確認事項</td>
+                <td><a href="copilot-client-checklist.md">copilot-client-checklist.md</a></td>
+              </tr>
+              <tr>
+                <td>Responsible AI ガバナンス設計書テンプレート</td>
+                <td>情シス・管理者向け設計テンプレート</td>
+                <td><a href="governance-ai-design-template.md">governance-ai-design-template.md</a></td>
+              </tr>
+              <tr>
+                <td>セキュリティ基準（GitHub Enterprise 全般）</td>
+                <td>認証・リポジトリ・Actions等の基準</td>
+                <td><a href="security-standards.html">security-standards.html</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>社内 GitHub Enterprise ポータル</p>
+      <p class="footer-links">
+        <a href="index.html">ホーム</a>
+        <a href="github-copilot.html">GitHub Copilot</a>
+        <a href="support-email.html">サポートメール</a>
+        <a href="security-standards.html">セキュリティ基準</a>
+        <a href="copilot-security-standards.html">Copilot セキュリティ基準</a>
+        <a href="chat-support.html">Chat 問い合わせ</a>
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
