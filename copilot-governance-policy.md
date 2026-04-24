@@ -2,7 +2,7 @@
 
 > **準拠:** JDLA「生成AIの利用ガイドライン」第1.1版 / JDLA「AIガバナンス・エコシステム」第III期報告書 / AI事業者ガイドライン（総務省・経産省）  
 > **文書番号:** GCP-GOV-001  
-> **版数:** 1.0  
+> **版数:** 1.1  
 > **施行日:** 2026年XX月XX日  
 > **作成者:**  
 > **承認者:**  
@@ -193,6 +193,9 @@ Copilot への入力（プロンプト、コメント、ソースコード中の
    - 社内コーディング規約への準拠
    - 既存コードベースとの整合性
    - ライセンス上の問題の有無
+3. **Copilot Code Review（自動レビュー機能）は一次スキャンとして活用し、人間による最終承認を省略しないこと。** AI による自動レビューは、人間レビュアーの判断を補助するものであり、代替するものではない
+4. AI生成コードを含む Pull Request では、通常のコードと同等以上のレビュー基準を適用する。特に Copilot Agent / Coding Agent が自動生成した PR については、人間による2名以上のレビュー承認を必須とする
+5. レビュー記録（承認者・指摘事項・対応内容）は Pull Request 上に残し、監査証跡として保管すること
 
 ### 第16条（AI生成コードの品質基準）
 
@@ -259,6 +262,60 @@ GitHub Organization 管理者は、以下の設定を必ず実施する。
 | 6 | Secret Scanning | 有効化 |
 | 7 | Audit Log | 有効化（Enterprise の場合はストリーミングも検討） |
 | 8 | MCP Server 接続先 | 承認済みサーバーのみに制限 |
+| 9 | **Repository Rulesets によるブランチ保護の強制** | **下記「9号」のとおり Enterprise レベルで強制適用** |
+
+#### 第22条9号（Repository Rulesets によるブランチ保護の強制）
+
+Enterprise 管理者は、**Enterprise レベルの Repository Rulesets** を用いて、全 Organization の全リポジトリに以下のブランチ保護ルールを強制適用する。Organization 管理者による bypass を原則として禁止し、監査可能な形で運用する。
+
+| # | ルール項目 | 設定値 | 目的 |
+|---|---|---|---|
+| 1 | Require a pull request before merging | **ON（強制）** | 直接 push の禁止 |
+| 2 | Required approving reviews | **1名以上（リスクに応じて2名）** | レビュー必須化 |
+| 3 | Dismiss stale reviews when new commits are pushed | **ON** | 承認後の改ざん防止 |
+| 4 | Require review from Code Owners | **ON** | CODEOWNERS の必須化 |
+| 5 | Require approval of the most recent reviewable push | **ON** | セルフマージ防止 |
+| 6 | Require conversation resolution before merging | **ON** | レビュー指摘の取りこぼし防止 |
+| 7 | Require status checks to pass（CodeQL / Secret Scanning / CI） | **ON** | 品質ゲート |
+| 8 | Block force pushes | **ON** | 履歴改ざん防止 |
+| 9 | Require signed commits | **推奨** | なりすまし防止 |
+| 10 | Restrict deletions | **ON** | 重要ブランチの削除防止 |
+
+**リスク別のレビュー階層:**
+
+| リスクレベル | 必要承認数 | CODEOWNERS | 追加要件 |
+|---|---|---|---|
+| 通常コード | 1名 | チームメンバー | CI 合格 |
+| セキュリティ関連コード | 2名 | セキュリティチーム必須 | SAST 合格 |
+| 本番デプロイ関連 | 2名 | SRE + Tech Lead | 変更管理チケット |
+| AI生成コード（Agent Mode / Coding Agent） | 2名 | 人間レビュアー | Copilot Code Review + 静的解析 |
+
+**CODEOWNERS の運用:**
+
+1. 全リポジトリに `.github/CODEOWNERS` ファイルを配置することを必須とする
+2. セキュリティ関連ディレクトリ（認証・暗号・インフラ等）は、セキュリティチームを CODEOWNERS に追加する
+3. CODEOWNERS 不在リポジトリは四半期棚卸しで検知し、是正する
+
+**Copilot Code Review の導入:**
+
+1. Repository レベルで Copilot の自動レビューを有効化し、PR 作成時に一次スキャンを実行する
+2. 自動レビューの結果は、人間レビュアーの判断材料として活用する
+3. 自動レビューは人間レビューの代替とはせず、**第15条3項に従い人間による最終承認を必須とする**
+
+**Bypass の管理:**
+
+1. Enterprise Rulesets の bypass 権限は、セキュリティチームの一部メンバーに限定する
+2. bypass の実施は Audit Log で記録し、月次で情報セキュリティ管理者がレビューする
+3. 正当な理由のない bypass は規程違反として扱う
+
+**段階導入計画:**
+
+```
+Phase 1（1ヶ月）  : Enterprise Rulesets で main ブランチ保護 + 1名レビュー必須
+Phase 2（2-3ヶ月）: CODEOWNERS 導入 + 2名レビュー + ステータスチェック強制
+Phase 3（3-6ヶ月）: Copilot Code Review 統合 + リスク別レビュー階層の適用
+Phase 4（継続）   : 監査ログストリーミング + 自動違反検知の運用
+```
 
 ### 第23条（アクセス管理）
 
@@ -474,6 +531,7 @@ AI生成コードに起因する以下の事象をインシデントとして取
 | 版数 | 日付 | 変更内容 | 変更者 | 承認者 |
 |---|---|---|---|---|
 | 1.0 | 2026/XX/XX | 初版作成 | | |
+| 1.1 | 2026/04/XX | 第15条にCopilot Code Review一次スキャン活用・人間最終承認必須を追記。第22条9号に「Repository Rulesets によるブランチ保護の強制」を追加（CODEOWNERS運用、リスク別レビュー階層、段階導入計画を含む） | | |
 
 ---
 
