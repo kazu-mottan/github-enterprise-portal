@@ -19,8 +19,12 @@ github-enterprise-portal/
 ├── copilot-security-standards.html     # セキュリティ基準 GitHub Copilot版
 ├── copilot-governance-policy.md        # GitHub Copilot 利用ガバナンス・運用規程（JDLA準拠）
 ├── copilot-data-privacy.md             # Copilot データプライバシーポリシー
-├── copilot-user-guide.md               # Copilot ユーザーガイド（開発者向け）
 ├── copilot-client-checklist.md         # Copilot クライアントとの確認事項チェックリスト
+│
+├── user-guides/                        # ユーザーガイド（フォルダ）
+│   ├── README.md                       #   ガイド一覧・初期セットアップ
+│   ├── copilot-user-guide.md           #   Copilot 利用ガイド（開発者向け）
+│   └── copilot-repository-guide.md     #   リポジトリ取り扱いガイド（ブランチ保護・CODEOWNERS・Content Exclusion）
 │
 │── ── ガバナンス・セキュリティ ── ──
 ├── security-standards.html             # セキュリティ基準（GitHub Enterprise 全般）
@@ -47,11 +51,14 @@ github-enterprise-portal/
 ### ドキュメント（Markdown）
 - **Copilot ガバナンス・運用規程** — JDLA準拠の全39条14章（禁止用途・利用範囲・データ入力・知的財産・品質管理・研修・インシデント対応）
 - **Copilot データプライバシー** — Business ライセンスのデータ保護方針の詳細
-- **Copilot ユーザーガイド** — 開発者向けの利用手順・禁止事項・セットアップ
 - **Copilot クライアントチェックリスト** — クライアント案件で Copilot を使う際の確認事項・トークスクリプト
 - **Responsible AI ガバナンス設計書テンプレート** — ISO 42001 / NIST AI RMF / EU AI Act 対応の設計テンプレート
 - **セキュアコードリポジトリ** — ブランチ保護・CodeQL・Dependabot 設定ガイド
 - **企画ドラフト** — GitHub Enterprise 導入企画書
+
+### ユーザーガイド（user-guides/）
+- **Copilot 利用ガイド** — 開発者向けの利用手順・禁止事項・セットアップ
+- **リポジトリ取り扱いガイド** — リポジトリ単位の設定（ブランチ保護・CODEOWNERS・Content Exclusion・AI生成コードの扱い）
 
 ## GitHub Pages
 

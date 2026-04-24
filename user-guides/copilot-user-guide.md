@@ -1,14 +1,14 @@
 # GitHub Copilot 利用ガイド（開発者向け）
 
 > **対象読者:** GitHub Copilot を業務で利用する開発者  
-> **前提:** 本ガイドを読み、[Responsible Use 同意書](copilot-responsible-use.html) に同意してから利用を開始してください。
+> **前提:** 本ガイドを読み、[Responsible Use 同意書](../copilot-responsible-use.html) に同意してから利用を開始してください。
 
 ---
 
 ## やることリスト（初回のみ）
 
 1. ☐ このガイドを最後まで読む
-2. ☐ [Responsible Use 同意書](copilot-responsible-use.html) を提出する
+2. ☐ [Responsible Use 同意書](../copilot-responsible-use.html) を提出する
 3. ☐ 管理者から Business ライセンスの割り当てを受ける
 4. ☐ エディタに Copilot 拡張をインストールする
 5. ☐ 動作確認（テストリポジトリで試す）
@@ -24,7 +24,7 @@
 
 - 業務では必ず **会社が契約した Business ライセンス** を使ってください
 - 個人ライセンスには IP 補償（著作権保護）がなく、組織のポリシー管理もできないため、業務利用は禁止です
-- ライセンスの申請は [管理者へ問い合わせ](support-email.html) てください
+- ライセンスの申請は [管理者へ問い合わせ](../support-email.html) てください
 
 ---
 
@@ -39,7 +39,7 @@ Copilot に以下の情報を入力・貼り付けしないでください。
 | **顧客データ** | 顧客の機密情報、契約情報、個人データ |
 | **社外秘の独自ロジック** | 未公開のアルゴリズム、特許出願中の技術 |
 
-> **迷ったら入力しない。** 判断に困ったら [Chat サポート](chat-support.html) に相談してください。
+> **迷ったら入力しない。** 判断に困ったら [Chat サポート](../chat-support.html) に相談してください。
 
 ---
 
@@ -69,7 +69,7 @@ Copilot に以下の情報を入力・貼り付けしないでください。
 2. 承認内容を議事録・メールに残す
 3. クライアントの機密情報を Copilot に入力しない
 
-詳細は [クライアントとの確認事項チェックリスト](copilot-client-checklist.md) を参照してください。
+詳細は [クライアントとの確認事項チェックリスト](../copilot-client-checklist.md) を参照してください。
 
 ---
 
@@ -82,7 +82,7 @@ Copilot に以下の情報を入力・貼り付けしないでください。
 | データの保持期間（IDE 補完・Chat） | **即時破棄** |
 | データの保持期間（Web Chat・CLI） | **最大 28 日間** |
 
-詳細は [データプライバシーポリシー](copilot-data-privacy.md) を参照してください。
+詳細は [データプライバシーポリシー](../copilot-data-privacy.md) を参照してください。
 
 ---
 
@@ -144,10 +144,10 @@ Copilot に以下の情報を入力・貼り付けしないでください。
 | 状況 | 対応 |
 |---|---|
 | Copilot が動かない | ステータスバーのアイコンを確認 → サインアウト/再サインイン |
-| ライセンスエラーが出る | 管理者にライセンス割り当てを確認 → [サポートメール](support-email.html) |
-| 明らかにおかしいコードが提案される | 採用しない。必要なら [Chat サポート](chat-support.html) に報告 |
+| ライセンスエラーが出る | 管理者にライセンス割り当てを確認 → [サポートメール](../support-email.html) |
+| 明らかにおかしいコードが提案される | 採用しない。必要なら [Chat サポート](../chat-support.html) に報告 |
 | クライアントが AI ツール利用を禁止している | Copilot を無効化して開発してください |
-| ルール違反を見つけた・してしまった | すぐに [管理者へ報告](support-email.html)。早期報告で対応できます |
+| ルール違反を見つけた・してしまった | すぐに [管理者へ報告](../support-email.html)。早期報告で対応できます |
 
 ---
 
@@ -155,8 +155,8 @@ Copilot に以下の情報を入力・貼り付けしないでください。
 
 | ドキュメント | 内容 | 対象 |
 |---|---|---|
-| [Responsible Use 同意書](copilot-responsible-use.html) | 利用前に必ず提出 | 全利用者 |
-| [クライアント確認チェックリスト](copilot-client-checklist.md) | クライアント案件での事前確認 | クライアント案件担当者 |
-| [データプライバシーポリシー](copilot-data-privacy.md) | データの取扱い詳細 | 詳細を知りたい方 |
-| [セキュリティ基準](security-standards.html) | 社内全体のセキュリティルール | 全利用者 |
-| [ガバナンス設計書テンプレート](governance-ai-design-template.md) | AI 導入のガバナンス設計 | 情シス・管理者 |
+| [Responsible Use 同意書](../copilot-responsible-use.html) | 利用前に必ず提出 | 全利用者 |
+| [クライアント確認チェックリスト](../copilot-client-checklist.md) | クライアント案件での事前確認 | クライアント案件担当者 |
+| [データプライバシーポリシー](../copilot-data-privacy.md) | データの取扱い詳細 | 詳細を知りたい方 |
+| [セキュリティ基準](../security-standards.html) | 社内全体のセキュリティルール | 全利用者 |
+| [ガバナンス設計書テンプレート](../governance-ai-design-template.md) | AI 導入のガバナンス設計 | 情シス・管理者 |
