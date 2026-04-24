@@ -129,6 +129,7 @@
     </div>
     <h1>GitHub Copilot セキュリティ基準</h1>
     <p>GitHub Copilot を安全に利用するために守るべきセキュリティルールをまとめています。<br>全利用者は本基準を遵守してください。</p>
+    <p style="font-size:0.8rem;opacity:0.5;margin-top:12px;">最終更新: 2026年4月</p>
   </div>
 
   <section class="section">
@@ -142,6 +143,11 @@
       <div class="info-box">
         <strong>対象ライセンス</strong>
         業務での GitHub Copilot 利用は <strong>Business / Enterprise プラン</strong> のみ許可されています。Individual / Pro / Pro+ プランでの業務利用は禁止です。
+      </div>
+
+      <div class="info-box" style="background:#fff8c5;border-color:#d4a72c;color:#6a5300;">
+        <strong>&#9888; 2026年4月 重要なポリシー変更</strong>
+        2026年4月24日より、GitHub Copilot の個人プラン（Free / Pro / Pro+）は、<strong>ユーザーが明示的にオプトアウトしない限り、プロンプト・補完・チャット等のデータがAIモデルの学習に使用される</strong>方針に変更されました。<strong>Business / Enterprise プランはこの変更の影響を受けません</strong>（契約上、学習利用が禁止）。業務では必ず Business / Enterprise を使用してください。
       </div>
 
       <!-- 1. Organization 管理者設定 -->
@@ -274,6 +280,45 @@
         <div class="standard-block-body">
           <p style="font-size:0.85rem;color:#57606a;margin-bottom:12px;">Copilot のデータ処理について理解し、適切に管理すること。</p>
 
+          <h4 style="font-size:0.9rem;font-weight:600;margin:0 0 8px;">プラン別データ学習ポリシー（2026年4月24日改定）</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>プラン</th>
+                <th>学習利用</th>
+                <th>オプトアウト</th>
+                <th>業務利用</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Free</td>
+                <td style="color:#cf222e;font-weight:600;">デフォルトで学習に使用される</td>
+                <td>手動でオプトアウト必要</td>
+                <td style="color:#cf222e;">禁止</td>
+              </tr>
+              <tr>
+                <td>Pro / Pro+</td>
+                <td style="color:#cf222e;font-weight:600;">デフォルトで学習に使用される</td>
+                <td>手動でオプトアウト必要</td>
+                <td style="color:#cf222e;">禁止</td>
+              </tr>
+              <tr>
+                <td>Business</td>
+                <td style="color:#1a7f37;font-weight:600;">契約上、学習に使用されない</td>
+                <td>不要（契約で保証）</td>
+                <td style="color:#1a7f37;">許可</td>
+              </tr>
+              <tr>
+                <td>Enterprise</td>
+                <td style="color:#1a7f37;font-weight:600;">契約上、学習に使用されない</td>
+                <td>不要（契約で保証）</td>
+                <td style="color:#1a7f37;">許可</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4 style="font-size:0.9rem;font-weight:600;margin:16px 0 8px;">データフロー（Business / Enterprise）</h4>
           <table class="data-table">
             <thead>
               <tr>
@@ -288,13 +333,13 @@
                 <td>IDE コード補完</td>
                 <td>コード周辺のコンテキストをサーバーに送信</td>
                 <td>リアルタイム処理後即時削除</td>
-                <td>されない（Business/Enterprise）</td>
+                <td>されない</td>
               </tr>
               <tr>
                 <td>Copilot Chat</td>
                 <td>プロンプトをサーバーに送信</td>
                 <td>最大28日間</td>
-                <td>されない（Business/Enterprise）</td>
+                <td>されない</td>
               </tr>
               <tr>
                 <td>提案コード</td>
@@ -311,29 +356,64 @@
             </tbody>
           </table>
 
+          <h4 style="font-size:0.9rem;font-weight:600;margin:16px 0 8px;">データレジデンシー（2026年4月時点）</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>サービス</th>
+                <th>日本リージョン</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>GitHub Enterprise Cloud</td>
+                <td style="color:#1a7f37;font-weight:600;">対応済み（2025年12月GA）</td>
+                <td>コード・メタデータは日本リージョンに保持可能</td>
+              </tr>
+              <tr>
+                <td>GitHub Copilot 推論処理</td>
+                <td style="color:#cf222e;font-weight:600;">未対応（米国/EU のみ）</td>
+                <td>ロードマップ段階。コードコンテキストは米国/EUで処理</td>
+              </tr>
+            </tbody>
+          </table>
+
           <ul class="rule-list" style="margin-top:16px;">
-            <li class="warn"><span class="rule-label label-should">注意</span>Copilot の推論処理は米国/EU のサーバーで行われる（日本リージョン未対応: 2026年4月時点）。</li>
+            <li class="warn"><span class="rule-label label-should">注意</span>Copilot の推論処理は米国/EU のサーバーで行われる（日本リージョン未対応: 2026年4月時点）。コードは日本に保持できても、AI処理は海外で行われる点に留意。</li>
             <li><span class="rule-label label-must">必須</span>個人データを Copilot に入力しないこと（越境データ移転の問題を回避）。</li>
             <li><span class="rule-label label-must">必須</span>金融・医療等データレジデンシー要件が厳格な案件では、プロジェクト責任者と法務が利用可否を協議すること。</li>
-            <li><span class="rule-label label-should">推奨</span>GitHub の DPA（Data Protection Agreement）の内容を法務部が確認し、記録すること。</li>
+            <li><span class="rule-label label-must">必須</span>GitHub の DPA（Data Protection Agreement）の内容を法務部が確認し、記録すること。</li>
+            <li class="ban"><span class="rule-label label-ban">禁止</span>個人プラン（Free / Pro / Pro+）を業務で使用すること。2026年4月の改定によりデフォルトで学習に使用されるため、機密情報漏洩リスクが高い。</li>
           </ul>
         </div>
       </div>
 
-      <!-- 6. MCP / Extensions / Agent -->
+      <!-- 6. Agent Mode / Coding Agent / MCP / Extensions -->
       <div class="standard-block">
         <div class="standard-block-header">
           <span class="icon">&#128268;</span>
-          <h3>MCP・Extensions・Agent のセキュリティ</h3>
+          <h3>Agent Mode・Coding Agent・MCP・Extensions のセキュリティ</h3>
         </div>
         <div class="standard-block-body">
+          <p style="font-size:0.85rem;color:#57606a;margin-bottom:12px;">2026年4月に Agent Mode が GA（一般提供）となり、Coding Agent（Issue からの自動 PR 作成）も提供開始されました。自律的なコード変更を伴うため、従来以上のセキュリティ管理が必要です。</p>
+
+          <h4 style="font-size:0.9rem;font-weight:600;margin:0 0 8px;">Agent Mode / Coding Agent</h4>
+          <ul class="rule-list">
+            <li><span class="rule-label label-must">必須</span>Agent Mode（IDE内自律実行）の実行結果は、必ず人間がレビュー・承認してから反映すること。</li>
+            <li><span class="rule-label label-must">必須</span>Coding Agent（Issue → 自動PR）の利用は、Organization 単位で明示的に有効化し、許可された組織のみで使用すること。</li>
+            <li><span class="rule-label label-must">必須</span>Coding Agent が生成した PR は、通常の PR と同等のレビュー・CI/CD チェックを必ず経ること。</li>
+            <li><span class="rule-label label-must">必須</span>Coding Agent はデフォルトで CodeQL・Secret Scanning・Copilot Code Review を実行する。これらの自動スキャンを無効化しないこと。</li>
+            <li><span class="rule-label label-should">推奨</span>Agent による特権操作（ファイル削除、デプロイ、インフラ変更等）には human approval ゲートを設定すること。</li>
+            <li><span class="rule-label label-should">推奨</span>Audit Log で Agent のセッション履歴を定期的に確認すること。</li>
+          </ul>
+
+          <h4 style="font-size:0.9rem;font-weight:600;margin:16px 0 8px;">MCP・Extensions</h4>
           <ul class="rule-list">
             <li><span class="rule-label label-must">必須</span>MCP（Model Context Protocol）サーバーへの接続は、情報セキュリティ管理者が事前承認したもののみ許可すること。</li>
             <li><span class="rule-label label-must">必須</span>MCP 接続には最小権限の認証情報を使用すること（広範な PAT の使用禁止）。</li>
-            <li><span class="rule-label label-must">必須</span>Copilot Agent（自律実行モード）の実行結果は、必ず人間がレビューしてから反映すること。</li>
             <li><span class="rule-label label-must">必須</span>Copilot Extensions（第三者拡張）は、情報セキュリティ管理者の事前評価・承認を経たもののみ利用可とすること。</li>
             <li class="ban"><span class="rule-label label-ban">禁止</span>未承認の MCP サーバー・Extensions を独自に接続・インストールすること。</li>
-            <li><span class="rule-label label-should">推奨</span>Agent による特権操作（ファイル削除、デプロイ等）には human approval ゲートを設定すること。</li>
           </ul>
         </div>
       </div>
@@ -544,6 +624,83 @@
                 <td>認証・リポジトリ・Actions等の基準</td>
                 <td><a href="security-standards.html">security-standards.html</a></td>
               </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 参考資料 -->
+      <div class="standard-block">
+        <div class="standard-block-header">
+          <span class="icon">&#128218;</span>
+          <h3>参考資料・準拠ガイドライン</h3>
+        </div>
+        <div class="standard-block-body">
+          <p style="font-size:0.85rem;color:#57606a;margin-bottom:12px;">本セキュリティ基準の作成にあたり、以下の資料を参考にしています。</p>
+
+          <h4 style="font-size:0.9rem;font-weight:600;margin:0 0 8px;">JDLA（日本ディープラーニング協会）</h4>
+          <table class="data-table">
+            <thead>
+              <tr><th>資料名</th><th>版数 / 年月</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><a href="https://www.jdla.org/document/" target="_blank">生成AIの利用ガイドライン</a></td><td>第1.1版（2023年10月）</td></tr>
+              <tr><td><a href="https://www.jdla.org/download/sg01-report3/" target="_blank">AIガバナンス・エコシステム 第III期報告書「AIガバナンスの実践に向けて」</a></td><td>2023年7月</td></tr>
+              <tr><td><a href="https://www.jdla.org/document/" target="_blank">生成AI開発契約ガイドライン</a></td><td>第1版（2025年9月）</td></tr>
+              <tr><td><a href="https://www.jdla.org/document/" target="_blank">AI品質ハンドブック</a></td><td>2021年7月</td></tr>
+            </tbody>
+          </table>
+
+          <h4 style="font-size:0.9rem;font-weight:600;margin:16px 0 8px;">GitHub 公式</h4>
+          <table class="data-table">
+            <thead>
+              <tr><th>資料名</th><th>URL / 備考</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>GitHub Copilot Trust Center</td><td><a href="https://resources.github.com/copilot-trust-center/" target="_blank">resources.github.com/copilot-trust-center/</a></td></tr>
+              <tr><td>Managing policies for Copilot in your organization</td><td><a href="https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-organization/manage-policies" target="_blank">docs.github.com</a></td></tr>
+              <tr><td>GitHub Terms for Additional Products and Features</td><td><a href="https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features" target="_blank">docs.github.com</a></td></tr>
+              <tr><td>Changes to GitHub Copilot plans for individuals（2026/4/20）</td><td><a href="https://github.blog/changelog/2026-04-20-changes-to-github-copilot-plans-for-individuals/" target="_blank">github.blog/changelog</a></td></tr>
+              <tr><td>GitHub Copilot Privacy Shift（2026/4/24）</td><td>個人プランのデータ学習デフォルト化</td></tr>
+            </tbody>
+          </table>
+
+          <h4 style="font-size:0.9rem;font-weight:600;margin:16px 0 8px;">セキュリティフレームワーク・標準</h4>
+          <table class="data-table">
+            <thead>
+              <tr><th>資料名</th><th>発行元</th><th>版数 / 年</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><a href="https://genai.owasp.org/llm-top-10/" target="_blank">OWASP Top 10 for LLM Applications</a></td><td>OWASP</td><td>v2.0（2025）</td></tr>
+              <tr><td><a href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/" target="_blank">OWASP Top 10 for Agentic Applications</a></td><td>OWASP</td><td>2026</td></tr>
+              <tr><td><a href="https://www.nist.gov/artificial-intelligence" target="_blank">NIST AI Risk Management Framework (AI RMF 1.0)</a></td><td>米国 NIST</td><td>2023</td></tr>
+              <tr><td>ISO/IEC 42001:2023（AI マネジメントシステム）</td><td>ISO/IEC</td><td>2023</td></tr>
+            </tbody>
+          </table>
+
+          <h4 style="font-size:0.9rem;font-weight:600;margin:16px 0 8px;">日本政府・行政機関</h4>
+          <table class="data-table">
+            <thead>
+              <tr><th>資料名</th><th>発行元</th><th>版数 / 年</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><a href="https://www.meti.go.jp/shingikai/mono_info_service/ai_shakai_jisso/" target="_blank">AI事業者ガイドライン</a></td><td>総務省・経産省</td><td>第1.0版（2024年4月）</td></tr>
+              <tr><td>個人情報保護法</td><td>個人情報保護委員会</td><td>2022年施行（2024年改正）</td></tr>
+              <tr><td>AI契約ガイドライン</td><td>経済産業省</td><td>2018年（随時更新）</td></tr>
+            </tbody>
+          </table>
+
+          <h4 style="font-size:0.9rem;font-weight:600;margin:16px 0 8px;">調査研究レポート</h4>
+          <table class="data-table">
+            <thead>
+              <tr><th>資料名</th><th>発行元</th><th>主な知見</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>GitHub Copilot RCT（arXiv:2302.06590）</td><td>Microsoft Research</td><td>55.8%のタスク完了速度向上</td></tr>
+              <tr><td>METR RCT（arXiv:2507.09089）</td><td>METR</td><td>熟練者で19%の生産性低下、主観と客観の39pt乖離</td></tr>
+              <tr><td>Cursor DiD研究（arXiv:2511.04427）</td><td>CMU等</td><td>速度向上は一時的、品質低下は持続的</td></tr>
+              <tr><td>DORA 2025</td><td>Google DORA</td><td>スループット向上も安定性悪化</td></tr>
+              <tr><td><a href="https://www.ai-souken.com/article/github-copilot-security-guide" target="_blank">GitHub Copilotのセキュリティ徹底解説 2026年版</a></td><td>AI総合研究所</td><td>3層セキュリティ設計、企業導入ガイド</td></tr>
             </tbody>
           </table>
         </div>
