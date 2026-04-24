@@ -2,7 +2,7 @@
 
 > **対象読者:** リポジトリの管理者・開発者（全員）  
 > **目的:** 各リポジトリで Copilot を安全かつ効果的に活用するための設定・運用方法を解説  
-> **関連規程:** [Copilot ガバナンス規程 第22条9号](../copilot-governance-policy.md)
+> **関連規程:** [Copilot ガバナンス規程 第22条9号](../policies/copilot-governance-policy.md)
 
 ---
 
@@ -39,7 +39,7 @@
 - [ ] リポジトリの可視性を **Private** または **Internal** に設定（Public 禁止）
 - [ ] リポジトリのカテゴリ（上記分類）を決定・記録
 - [ ] `.gitignore` に `.env`, `credentials.json`, `secrets/*` 等を追加
-- [ ] 顧客案件の場合、Copilot 利用の契約確認（[クライアントチェックリスト](../copilot-client-checklist.md)）
+- [ ] 顧客案件の場合、Copilot 利用の契約確認（[クライアントチェックリスト](copilot-client-checklist.md)）
 
 ### 初期設定（Day 1-7）
 
@@ -53,25 +53,78 @@
 
 ---
 
-## 3. ブランチ保護ルール（必須設定）
+## 3. ブランチ保護ルール（Rulesets / 必須設定）
 
-Enterprise Rulesets で自動強制されますが、リポジトリ管理者も理解しておいてください。
+> **2025年以降は Rulesets が推奨。** 旧来の「Branch protection rules」も併用可能ですが、新規設定は Rulesets で統一してください。Rulesets は Organization レベルでの一括適用、複数ブランチへの柔軟なターゲティング、`Evaluate`（ドライラン）モードなどが利用できます。
 
-### 最低限の設定（`main` ブランチ）
+### 3.1 設定手順（最小）
 
 ```
-Settings → Branches → Branch protection rules → Add rule
+Settings → Rules → Rulesets → New ruleset → New branch ruleset
 ```
 
-| 設定 | 値 | 理由 |
-|---|---|---|
-| Require a pull request before merging | ✅ | 直接 push 禁止 |
-| Required approving reviews | **1名以上**（重要PJは 2名） | レビュー必須 |
-| Dismiss stale pull request approvals | ✅ | 承認後の改ざん防止 |
-| Require review from Code Owners | ✅ | CODEOWNERS 必須 |
-| Require conversation resolution | ✅ | 指摘の取りこぼし防止 |
-| Require status checks to pass | ✅（CodeQL, CI, Secret Scanning） | 品質ゲート |
-| Include administrators | ✅ | 管理者も例外なし |
+1. **Ruleset name**: 任意（例: `main-protection`）
+2. **Enforcement status**:
+   - **Active**（有効・推奨）
+   - `Evaluate`: 強制せずログだけ残すドライランモード。本番適用前の検証用
+   - `Disabled`: 設定は残して無効化
+3. **Target branches** → **Add target** → **✅ Include default branch**
+   - `main` のようにブランチ名を直接指定するより、**デフォルトブランチ名に動的追従** するこのオプションが推奨
+   - Organization Ruleset で複数リポジトリに適用する際、各リポジトリのデフォルト名に合わせて自動適用される
+4. **Bypass list**: 最小限に（緊急時用の Admin のみ。形骸化を避ける）
+5. 下記のルールを選択して **Create**
+
+### 3.2 ルール一覧と推奨設定
+
+プロジェクト分類（§1）に応じて以下を設定してください。
+
+| # | Rule | 標準PJ | 機密PJ | 極秘PJ | 説明 |
+|---|---|:---:|:---:|:---:|---|
+| 1 | **Restrict deletions** | ✅ | ✅ | ✅ | main の誤削除防止 |
+| 2 | **Block force pushes** | ✅ | ✅ | ✅ | 履歴書き換え禁止 |
+| 3 | **Require linear history** | △ | ✅ | ✅ | merge commit 禁止（squash/rebase のみ） |
+| 4 | **Require signed commits** | △ | ✅ | ✅ | GPG/SSH 署名必須 |
+| 5 | **Require a pull request before merging** | ✅ | ✅ | ✅ | 直接 push 禁止（詳細は §3.3） |
+| 6 | **Require status checks to pass** | ✅ | ✅ | ✅ | CI 通過必須（詳細は §3.4） |
+| 7 | **Require code scanning results** | △ | ✅ | ✅ | CodeQL 結果必須 |
+| 8 | **Require deployments to succeed** | ❌ | △ | ✅ | Staging デプロイ成功必須 |
+| 9 | **Require merge queue** | ❌ | △ | △ | 複数 PR の並列マージ衝突回避 |
+| 10 | **Automatically request Copilot code review** | ✅ | ✅ | ― | 自動レビュー（§6 参照／極秘PJ は Copilot 利用禁止のため対象外） |
+
+凡例: ✅ 推奨 / △ 任意 / ❌ 原則不要 / ― 対象外
+
+### 3.3 「Require a pull request before merging」のサブ設定
+
+| サブ設定 | 標準PJ | 機密PJ | 極秘PJ | 説明 |
+|---|:---:|:---:|:---:|---|
+| Required approvals | 1 | 2 | 2 | 承認人数 |
+| Dismiss stale pull request approvals | ✅ | ✅ | ✅ | 再 push で承認リセット |
+| Require review from Code Owners | ✅ | ✅ | ✅ | CODEOWNERS 必須 |
+| Require approval of most recent reviewable push | ✅ | ✅ | ✅ | 承認後の"こっそり追加 push"防止 |
+| Require conversation resolution before merging | ✅ | ✅ | ✅ | コメント全解決必須 |
+| Require review from specific teams | △ | ✅ | ✅ | 指定チームのレビュー必須 |
+
+### 3.4 「Require status checks to pass」のサブ設定
+
+| サブ設定 | 推奨 | 説明 |
+|---|:---:|---|
+| Require branches to be up to date before merging | ✅ | main の最新取り込み必須 |
+| 必須チェック | CI / Lint / CodeQL / Secret Scanning | 品質ゲート |
+
+### 3.5 攻撃・事故と対応ルールの対応表
+
+| 攻撃 / 事故 | 防げるルール |
+|---|---|
+| main への直接 push | #5 Require PR |
+| main の誤削除 | #1 Restrict deletions |
+| 履歴の書き換え | #2 Block force pushes |
+| レビューなしマージ | #5 Required approvals |
+| 承認後のこっそり変更 | Dismiss stale / Most recent push |
+| CI 失敗のままマージ | #6 Require status checks |
+| なりすましコミット | #4 Require signed commits |
+| セキュリティ脆弱性混入 | #7 Code scanning + #10 Copilot |
+| 壊れた本番デプロイ | #8 Require deployments |
+| 規約違反・typo 残存 | #10 Copilot 自動レビュー |
 
 ---
 
@@ -162,20 +215,68 @@ Repository Settings → Copilot → Content exclusion
 
 2026年4月時点で GA の機能。PR に対して自動レビューを実行します。
 
-### 有効化方法
+### 6.1 開発フローにおける Copilot の位置付け
+
+Copilot は「人間レビュアーの代替」ではなく、**一次スキャン担当** として開発フローに組み込みます。
 
 ```
-Repository Settings → Code review → Copilot code review → Enable auto-review
+[Issue 起票]
+   │ 💬 Copilot Chat で設計相談 / 仕様整理
+   │ 🤖 Coding Agent に軽量 Issue を委任（§8 参照・2名レビュー必須）
+   ↓
+[コーディング]
+   │ ⚡ Code Completion / 💬 Chat / 🧪 テスト生成
+   ↓
+[PR 作成]
+   │ 📝 PR summary を Copilot が自動ドラフト
+   ↓
+[CI + 🤖 Copilot Code Review（一次レビュー）]  ← Ruleset で自動発火
+   │ typo / null 漏れ / 規約違反を洗い出す
+   ↓
+[人間レビュー（必須・代替不可）]
+   │ 🧠 設計・ビジネスロジック・セキュリティを確認
+   ↓
+[承認 → main マージ]
 ```
 
-### 運用ポイント
+### 6.2 有効化手順（Rulesets 経由・推奨）
+
+§3 で作成した Ruleset に以下を追加します。
+
+```
+Settings → Rules → Rulesets → 対象 ruleset を編集
+  → Branch rules
+    → ✅ Automatically request Copilot code review
+      → ✅ Review new pushes（push 毎に再レビュー・推奨）
+      → ✅ Review draft pull requests（draft 段階から・推奨）
+```
+
+> **2025-09 の変更:** 以前は「Require a pull request before merging」のサブ設定でしたが、**独立ルール化** されました。マージゲートを導入せず自動レビューのみを有効化することも可能です。
+
+### 6.3 個別 PR で手動レビューを依頼する
+
+**Web UI:**
+
+```
+PR 画面 → Reviewers → Copilot を選択
+```
+
+**GitHub CLI**（`gh` 2.88.0 以降・2026-03-11 リリース）:
+
+```bash
+gh pr edit --add-reviewer @copilot
+# gh pr create / gh pr edit のインタラクティブ選択でも Copilot を指定可能
+```
+
+### 6.4 運用ポイント
 
 1. **一次スキャンとして活用** — 人間レビューの前に Copilot が自動コメント
-2. **人間レビューは必ず実施** — 自動レビューは人間レビューの代替ではない（[第15条3項](../copilot-governance-policy.md)）
+2. **人間レビューは必ず実施** — 自動レビューは人間レビューの代替ではない（[第15条3項](../policies/copilot-governance-policy.md)）。**Copilot の承認は GitHub 側でもマージ要件として数えない**
 3. **指摘の優先度を判断** — AI の指摘がすべて正しいとは限らない。レビュアーが採否を判断
 4. **レビュー記録は PR に残す** — 監査証跡として保管
+5. **チーム内で位置付けを合意** — 「Copilot コメントは参考情報、最終判断は人間」と明文化
 
-### 人間レビューで特に確認すること
+### 6.5 人間レビューで特に確認すること
 
 Copilot Code Review では拾いきれない観点:
 
@@ -183,6 +284,7 @@ Copilot Code Review では拾いきれない観点:
 - 既存コードベースとの整合性
 - パフォーマンスへの影響
 - 顧客契約・業界規制への適合
+- セキュリティ（特に認証・認可・決済・個人情報が絡む箇所）
 
 ---
 
@@ -228,7 +330,7 @@ Copilot Code Review では拾いきれない観点:
 
 ### Agent が作成した PR の扱い
 
-1. **必ず2名以上の人間レビュー**が必要（[第15条4項](../copilot-governance-policy.md)）
+1. **必ず2名以上の人間レビュー**が必要（[第15条4項](../policies/copilot-governance-policy.md)）
 2. Agent が実行した変更の妥当性を確認
 3. CodeQL・Secret Scanning の結果を必ず確認（Agent はデフォルトで実行するが無効化禁止）
 4. Agent のセッション履歴は Audit Log で確認可能
@@ -312,9 +414,9 @@ CODEOWNERS・PR レビュー履歴・Audit Log は共有可能です。個別の
 | ドキュメント | 内容 |
 |---|---|
 | [Copilot 利用ガイド（開発者向け）](copilot-user-guide.md) | Copilot の基本的な使い方 |
-| [Copilot ガバナンス規程](../copilot-governance-policy.md) | 全社ガバナンス規程（第22条9号に詳細） |
+| [Copilot ガバナンス規程](../policies/copilot-governance-policy.md) | 全社ガバナンス規程（第22条9号に詳細） |
 | [Copilot セキュリティ基準](../copilot-security-standards.html) | セキュリティルール |
-| [クライアント確認チェックリスト](../copilot-client-checklist.md) | 顧客案件での事前確認 |
+| [クライアント確認チェックリスト](copilot-client-checklist.md) | 顧客案件での事前確認 |
 | [セキュリティ基準（全般）](../security-standards.html) | GitHub Enterprise 全般 |
 
 ---

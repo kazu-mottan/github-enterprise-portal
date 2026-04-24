@@ -133,7 +133,7 @@
 
 ## 関連ドキュメント
 
-- [GitHub Copilot データプライバシーポリシー](copilot-data-privacy.md)
-- [GitHub Copilot ページ](github-copilot.html)
-- [セキュリティ基準](security-standards.html)
-- [サポートメール](support-email.html)
+- [GitHub Copilot データプライバシーポリシー](../policies/copilot-data-privacy.md)
+- [GitHub Copilot ページ](../github-copilot.html)
+- [セキュリティ基準](../security-standards.html)
+- [サポートメール](../support-email.html)

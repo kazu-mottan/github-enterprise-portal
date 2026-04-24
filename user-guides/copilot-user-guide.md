@@ -69,7 +69,7 @@ Copilot に以下の情報を入力・貼り付けしないでください。
 2. 承認内容を議事録・メールに残す
 3. クライアントの機密情報を Copilot に入力しない
 
-詳細は [クライアントとの確認事項チェックリスト](../copilot-client-checklist.md) を参照してください。
+詳細は [クライアントとの確認事項チェックリスト](copilot-client-checklist.md) を参照してください。
 
 ---
 
@@ -82,7 +82,7 @@ Copilot に以下の情報を入力・貼り付けしないでください。
 | データの保持期間（IDE 補完・Chat） | **即時破棄** |
 | データの保持期間（Web Chat・CLI） | **最大 28 日間** |
 
-詳細は [データプライバシーポリシー](../copilot-data-privacy.md) を参照してください。
+詳細は [データプライバシーポリシー](../policies/copilot-data-privacy.md) を参照してください。
 
 ---
 
@@ -156,7 +156,7 @@ Copilot に以下の情報を入力・貼り付けしないでください。
 | ドキュメント | 内容 | 対象 |
 |---|---|---|
 | [Responsible Use 同意書](../copilot-responsible-use.html) | 利用前に必ず提出 | 全利用者 |
-| [クライアント確認チェックリスト](../copilot-client-checklist.md) | クライアント案件での事前確認 | クライアント案件担当者 |
-| [データプライバシーポリシー](../copilot-data-privacy.md) | データの取扱い詳細 | 詳細を知りたい方 |
+| [クライアント確認チェックリスト](copilot-client-checklist.md) | クライアント案件での事前確認 | クライアント案件担当者 |
+| [データプライバシーポリシー](../policies/copilot-data-privacy.md) | データの取扱い詳細 | 詳細を知りたい方 |
 | [セキュリティ基準](../security-standards.html) | 社内全体のセキュリティルール | 全利用者 |
-| [ガバナンス設計書テンプレート](../governance-ai-design-template.md) | AI 導入のガバナンス設計 | 情シス・管理者 |
+| [ガバナンス設計書テンプレート](../templates/governance-ai-design-template.md) | AI 導入のガバナンス設計 | 情シス・管理者 |

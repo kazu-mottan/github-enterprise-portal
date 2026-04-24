@@ -94,7 +94,7 @@ Business / Enterprise ライセンスでは、GitHub の利用規約により以
 - 未公開の財務情報
 ```
 
-万が一入力してしまった場合は、該当のシークレット・トークンを即座にローテーションし、[セキュリティチームに報告](security-standards.html)してください。
+万が一入力してしまった場合は、該当のシークレット・トークンを即座にローテーションし、[セキュリティチームに報告](../security-standards.html)してください。
 
 ---
 
@@ -118,7 +118,7 @@ GitHub Enterprise → Organization Settings
 → Copilot → Policies
 ```
 
-管理者設定の変更が必要な場合は [管理者へ問い合わせ](support-email.html) ください。
+管理者設定の変更が必要な場合は [管理者へ問い合わせ](../support-email.html) ください。
 
 ---
 
@@ -127,5 +127,5 @@ GitHub Enterprise → Organization Settings
 - [GitHub Copilot Trust Center](https://resources.github.com/copilot-trust-center/)
 - [GitHub Copilot for Business プライバシーに関する声明](https://docs.github.com/ja/site-policy/privacy-policies/github-copilot-for-business-privacy-statement)
 - [GitHub プライバシーポリシー（日本語）](https://docs.github.com/ja/site-policy/privacy-policies/github-general-privacy-statement)
-- [社内セキュリティ基準](security-standards.html)
-- [GitHub Copilot ページへ戻る](github-copilot.html)
+- [社内セキュリティ基準](../security-standards.html)
+- [GitHub Copilot ページへ戻る](../github-copilot.html)

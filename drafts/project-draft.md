@@ -132,6 +132,6 @@
 ## 9. 補足・参考資料
 
 - [GitHub Enterprise Cloud 公式ドキュメント](https://docs.github.com/ja/enterprise-cloud@latest)
-- [セキュアコードリポジトリ 運用ガイド](secure-code-repository.md)
-- [セキュリティ基準](security-standards.html)
-- [GitHub Enterprise ポータル（本サイト）](index.html)
+- [セキュアコードリポジトリ 運用ガイド](../user-guides/secure-code-repository.md)
+- [セキュリティ基準](../security-standards.html)
+- [GitHub Enterprise ポータル（本サイト）](../index.html)
